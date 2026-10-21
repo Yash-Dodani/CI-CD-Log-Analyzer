@@ -194,10 +194,22 @@ class RequestHandler(BaseHTTPRequestHandler):
 
             self.send_json_response(200, result)
 
-        # 2. GITHUB REPOSITORIES
+        # 2. GITHUB USER AUTH
+        elif self.path == "/api/github/user":
+            token = data.get("token") or None
+            if not token:
+                self.send_json_response(400, {"error": "Token is required"})
+            else:
+                try:
+                    user_info = analyzer.fetch_github_user(token)
+                    self.send_json_response(200, user_info)
+                except Exception as e:
+                    self.send_json_response(400, {"error": str(e)})
+
+        # 3. GITHUB REPOSITORIES
         elif self.path == "/api/github/repos":
             token = data.get("token") or None
-            username = data.get("username") or "Yash-Dodani"
+            username = data.get("username") or None
             try:
                 repos = analyzer.fetch_github_repos(token=token, username=username)
                 self.send_json_response(200, repos)
