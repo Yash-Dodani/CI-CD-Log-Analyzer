@@ -6,9 +6,9 @@ WORKDIR /app
 COPY . /app
 
 # Expose web server port
-EXPOSE 8080
+EXPOSE 5050
 
 ENV PYTHONUNBUFFERED=1
-ENV PORT=8080
+ENV PORT=5050
 
 CMD ["python", "web_server.py"]

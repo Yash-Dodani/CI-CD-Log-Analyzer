@@ -12,6 +12,7 @@ import sys
 import json
 import urllib.request
 import urllib.error
+import socket
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from typing import Dict, Any, List
 
@@ -23,7 +24,20 @@ if hasattr(sys.stderr, 'reconfigure'):
 
 import analyzer
 
-PORT = int(os.environ.get("PORT", 8080))
+
+def get_free_port(preferred_port: int = 5050) -> int:
+    """Finds an open port starting from preferred_port (avoids Oracle 8080 conflict)."""
+    for p in range(preferred_port, preferred_port + 50):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(('0.0.0.0', p))
+                return p
+            except OSError:
+                continue
+    return preferred_port
+
+
+PORT = int(os.environ.get("PORT", 0)) or get_free_port(5050)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SAMPLES_DIR = os.path.join(BASE_DIR, "samples")
 HISTORY_FILE = os.path.join(BASE_DIR, "incident_history.json")

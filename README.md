@@ -1,3 +1,4 @@
+
 # ⚡ LogSense AI — AI-Powered CI/CD Log Analyzer & Observability SaaS
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -83,7 +84,7 @@ cd ai-cicd-log-analyzer
 python web_server.py
 ```
 
-Open your browser at **`http://localhost:8080`**.
+Open your browser at **`http://localhost:5050`**.
 
 ---
 
@@ -110,7 +111,7 @@ python analyzer.py --log samples/docker_build_fail.log --provider groq --api-key
 docker-compose up -d
 ```
 
-The SaaS dashboard will be live at `http://localhost:8080`.
+The SaaS dashboard will be live at `http://localhost:5050`.
 
 ---
 
@@ -118,7 +119,7 @@ The SaaS dashboard will be live at `http://localhost:8080`.
 
 | Variable | Description |
 | :--- | :--- |
-| `PORT` | Server listening port (default: `8080`) |
+| `PORT` | Server listening port (default: `5050`) |
 | `GEMINI_API_KEY` | Optional Google Gemini API Key |
 | `GROQ_API_KEY` | Optional Groq API Key |
 | `SLACK_WEBHOOK_URL` | Optional Slack/Discord webhook for alerts |
