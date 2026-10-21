@@ -3,10 +3,14 @@
     "public": ".",
     "ignore": [
       "firebase.json",
+      ".firebaserc",
       "**/.*",
       "**/node_modules/**",
       "Dockerfile",
-      "docker-compose.yml"
+      "docker-compose.yml",
+      "*.py",
+      "*.log",
+      "incident_history.json"
     ],
     "rewrites": [
       {
