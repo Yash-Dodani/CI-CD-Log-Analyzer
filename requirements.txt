@@ -1,0 +1,6 @@
+# AI CI/CD Log Analyzer & Observability Platform
+# Core engine is 100% Zero-Dependency (Python Standard Library only)
+# Optional helper packages for extended server deployments:
+
+requests>=2.31.0
+python-dotenv>=1.0.0

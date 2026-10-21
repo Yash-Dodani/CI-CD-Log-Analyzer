@@ -1,0 +1,13 @@
+2026-10-21T09:12:04.108Z [webpack-cli] Compilation failed with errors:
+2026-10-21T09:12:04.110Z ERROR in ./src/components/PaymentCheckout.tsx 14:2-31
+2026-10-21T09:12:04.112Z Module not found: Error: Can't resolve '@stripe/react-stripe-js' in '/app/src/components'
+2026-10-21T09:12:04.114Z Did you mean 'stripe-js'?
+2026-10-21T09:12:04.115Z BREAKING CHANGE: The request '@stripe/react-stripe-js' failed to resolve only because it was resolved as fully specified
+2026-10-21T09:12:04.116Z (probably because the origin is a '.mjs' file or a '.js' file where the package.json contains '"type": "module"').
+2026-10-21T09:12:04.120Z npm error code ELIFECYCLE
+2026-10-21T09:12:04.121Z npm error errno 1
+2026-10-21T09:12:04.122Z npm error app@0.1.0 build: `react-scripts build`
+2026-10-21T09:12:04.123Z npm error Exit status 1
+2026-10-21T09:12:04.124Z npm error Failed at the app@0.1.0 build script.
+2026-10-21T09:12:04.125Z npm error This is probably not a problem with npm. There is likely additional logging output above.
+2026-10-21T09:12:04.130Z Error: Process completed with exit code 1.

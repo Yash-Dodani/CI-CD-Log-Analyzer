@@ -1,0 +1,37 @@
+name: AI CI/CD Diagnostic Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Simulate Test / Build Step
+        id: test_step
+        continue-on-error: true
+        run: |
+          echo "Simulating automated build pipeline..."
+          # Running test suite and redirecting output
+          python -m unittest discover > build.log 2>&1 || exit 1
+
+      - name: Run AI-Powered Log Analyzer on Failure
+        if: steps.test_step.outcome == 'failure'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          echo "Build failed. Invoking AI diagnostic engine..."
+          python analyzer.py --log build.log --provider offline --output markdown >> $GITHUB_STEP_SUMMARY

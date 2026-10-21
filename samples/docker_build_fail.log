@@ -1,0 +1,41 @@
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 520B done
+#2 [internal] load .dockerignore
+#3 [1/5] FROM python:3.11-slim@sha256:4d4c51...
+#4 [2/5] WORKDIR /app
+#5 [3/5] COPY requirements.txt .
+#6 [4/5] RUN pip install --no-cache-dir -r requirements.txt
+#6 2.341 Collecting fastapi==0.110.0
+#6 4.120 Collecting uvicorn==0.28.0
+#6 5.892 Collecting psycopg2==2.9.9
+#6 6.104   Downloading psycopg2-2.9.9.tar.gz (384 kB)
+#6 7.451   Running setup.py install for psycopg2 ... error
+#6 7.453   error: subprocess-exited-with-error
+#6 7.454   
+#6 7.455   Error: pg_config executable not found.
+#6 7.456   
+#6 7.457   pg_config is required to build psycopg2 from source. Please add the directory
+#6 7.458   containing pg_config to the PATH or specify the full executable path with the
+#6 7.459   option:
+#6 7.460   
+#6 7.461       python setup.py build_ext --pg-config=/path/to/pg_config build ...
+#6 7.462   
+#6 7.463   Alternatively, you can install 'psycopg2-binary' instead of 'psycopg2' for a
+#6 7.464   pre-compiled wheel.
+#6 7.465   [end of output]
+#6 7.466 
+#6 7.467 note: This error originates from a subprocess, and is likely not a problem with pip.
+#6 7.468 ERROR: Failed building wheel for psycopg2
+#6 ERROR: process "/bin/sh -c pip install --no-cache-dir -r requirements.txt" did not complete successfully: exit code: 1
+------
+ > [4/5] RUN pip install --no-cache-dir -r requirements.txt:
+------
+Dockerfile:7
+--------------------
+   5 |     COPY requirements.txt .
+   6 |     
+   7 | >>> RUN pip install --no-cache-dir -r requirements.txt
+   8 |     
+   9 |     COPY . .
+--------------------
+ERROR: failed to solve: process "/bin/sh -c pip install --no-cache-dir -r requirements.txt" did not complete successfully: exit code: 1

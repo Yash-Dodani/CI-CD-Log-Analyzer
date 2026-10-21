@@ -1,0 +1,20 @@
+[2026-10-21T08:14:22.104Z] Running: flutter build apk --release
+[2026-10-21T08:14:25.891Z] Resolving dependencies...
+[2026-10-21T08:14:27.342Z] Got dependencies!
+[2026-10-21T08:14:31.012Z] Compiling lib/main.dart...
+[2026-10-21T08:14:38.419Z] lib/screens/home_dashboard.dart:47:19: Error: The getter 'userProfile' isn't defined for the class 'AuthState'.
+[2026-10-21T08:14:38.420Z]  - 'AuthState' is from 'package:my_app/bloc/auth_state.dart' ('lib/bloc/auth_state.dart').
+[2026-10-21T08:14:38.420Z] Try correcting the name to the name of an existing getter, or defining a getter or field named 'userProfile'.
+[2026-10-21T08:14:38.421Z]                   state.userProfile.avatarUrl,
+[2026-10-21T08:14:38.421Z]                         ^^^^^^^^^^^
+[2026-10-21T08:14:38.425Z] lib/screens/home_dashboard.dart:58:24: Error: A value of type 'String?' cannot be assigned to a variable of type 'String' because 'String?' is nullable and 'String' isn't.
+[2026-10-21T08:14:38.425Z]                   title: state.user?.displayName,
+[2026-10-21T08:14:38.426Z]                          ^^^^^^^^^^^^^^^^^^^^^^^
+[2026-10-21T08:14:39.110Z] Target kernel_snapshot failed: Exception
+[2026-10-21T08:14:40.012Z] FAILURE: Build failed with an exception.
+[2026-10-21T08:14:40.013Z] * Where:
+[2026-10-21T08:14:40.013Z] Script 'C:\src\flutter\packages\flutter_tools\gradle\src\main\groovy\flutter.groovy' line: 1205
+[2026-10-21T08:14:40.014Z] * What went wrong:
+[2026-10-21T08:14:40.014Z] Execution failed for task ':app:compileFlutterBuildRelease'.
+[2026-10-21T08:14:40.015Z] > Process 'command 'C:\src\flutter\bin\flutter.bat'' finished with non-zero exit value 1
+[2026-10-21T08:14:40.016Z] BUILD FAILED in 18s
