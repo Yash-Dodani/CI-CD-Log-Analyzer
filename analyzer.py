@@ -74,7 +74,7 @@ def sanitize_and_extract_error_window(log_text: str, max_lines: int = 120) -> st
     end_idx = min(len(lines), start_idx + max_lines)
 
     extracted = lines[start_idx:end_idx]
-    header = f"--- [CI/CD Log Truncated: Showing lines {start_idx+1} to {end_idx} of {len(lines)}] ---"
+    header = f"- [CI/CD Log Truncated: Showing lines {start_idx+1} to {end_idx} of {len(lines)}] -"
     return header + "\n" + "\n".join(extracted)
 
 
@@ -131,7 +131,7 @@ def run_offline_heuristics(log_snippet: str) -> Dict[str, Any]:
                 "- psycopg2==2.9.9\n"
                 "+ psycopg2-binary==2.9.9\n\n"
                 "Option B: Install build dependencies in Dockerfile:\n"
-                "RUN apt-get update && apt-get install -y --no-install-recommends libpq-dev gcc && rm -rf /var/lib/apt/lists/*"
+                "RUN apt-get update && apt-get install -y libpq-dev gcc && rm -rf /var/lib/apt/lists/*"
             ),
             "prevention": "Prefer pre-compiled wheel binaries for Python C-extensions in production Docker base images to accelerate build times."
         }
@@ -145,7 +145,7 @@ def run_offline_heuristics(log_snippet: str) -> Dict[str, Any]:
             "confidence": "97%",
             "suggested_fix": (
                 "Install the required Stripe React SDK and peer dependency:\n"
-                "npm install @stripe/react-stripe-js @stripe/stripe-js --save\n\n"
+                "npm install @stripe/react-stripe-js @stripe/stripe-js\n\n"
                 "Ensure package.json has:\n"
                 '  "dependencies": {\n'
                 '    "@stripe/react-stripe-js": "^2.4.0",\n'
