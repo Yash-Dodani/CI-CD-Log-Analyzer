@@ -422,6 +422,53 @@ def fetch_job_logs(owner: str, repo: str, job_id: int, token: Optional[str] = No
         return resp.read().decode("utf-8", errors="replace")
 
 
+def rerun_workflow_run(owner: str, repo: str, run_id: int, token: Optional[str] = None) -> Dict[str, Any]:
+    """Triggers GitHub Actions workflow re-run on a failed run."""
+    url = f"https://api.github.com/repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs"
+    req = urllib.request.Request(url, data=b"{}", headers=get_github_headers(token))
+    try:
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            return {"status": "retriggered", "code": resp.status}
+    except Exception as e:
+        # Fallback to full workflow rerun
+        url_full = f"https://api.github.com/repos/{owner}/{repo}/actions/runs/{run_id}/rerun"
+        req_full = urllib.request.Request(url_full, data=b"{}", headers=get_github_headers(token))
+        try:
+            with urllib.request.urlopen(req_full, timeout=12) as resp2:
+                return {"status": "retriggered_full", "code": resp2.status}
+        except Exception as e2:
+            return {"status": "error", "message": str(e2)}
+
+
+def create_github_branch(owner: str, repo: str, new_branch: str, base_branch: str = "main", token: Optional[str] = None) -> Dict[str, Any]:
+    """Creates a new git branch from base branch."""
+    ref_url = f"https://api.github.com/repos/{owner}/{repo}/git/ref/heads/{base_branch}"
+    req = urllib.request.Request(ref_url, headers=get_github_headers(token))
+    with urllib.request.urlopen(req, timeout=10) as resp:
+        data = json.loads(resp.read().decode("utf-8"))
+        sha = data.get("object", {}).get("sha")
+
+    post_url = f"https://api.github.com/repos/{owner}/{repo}/git/refs"
+    payload = json.dumps({"ref": f"refs/heads/{new_branch}", "sha": sha}).encode("utf-8")
+    req_post = urllib.request.Request(post_url, data=payload, headers=get_github_headers(token))
+    with urllib.request.urlopen(req_post, timeout=10) as resp_post:
+        return json.loads(resp_post.read().decode("utf-8"))
+
+
+def create_github_pull_request(owner: str, repo: str, title: str, body: str, head_branch: str, base_branch: str = "main", token: Optional[str] = None) -> Dict[str, Any]:
+    """Creates a Pull Request with the AI Self-Healing Patch."""
+    url = f"https://api.github.com/repos/{owner}/{repo}/pulls"
+    payload = json.dumps({
+        "title": title,
+        "body": body,
+        "head": head_branch,
+        "base": base_branch
+    }).encode("utf-8")
+    req = urllib.request.Request(url, data=payload, headers=get_github_headers(token))
+    with urllib.request.urlopen(req, timeout=12) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+
 def send_webhook_alert(webhook_url: str, analysis: Dict[str, Any], log_file: str):
     """Sends Slack / Discord webhook diagnostic alert."""
     payload = {
