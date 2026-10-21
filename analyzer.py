@@ -101,8 +101,8 @@ def run_offline_heuristics(log_snippet: str) -> Dict[str, Any]:
             "prevention": "Enable Dart strict-casts and strict-inference in analysis_options.yaml to catch null-safety regressions pre-commit."
         }
 
-    # 2. Python Stripe / Database Pool
-    elif "signatureverificationerror" in lower or "stripe" in lower:
+    # 2. Python Stripe Webhook Signature / Mocking
+    elif "signatureverificationerror" in lower or "stripe.webhook" in lower:
         return {
             "root_cause": "Stripe webhook signature validation failed because the mock test request header did not compute a valid HMAC-SHA256 signature against the dummy webhook secret.",
             "category": "Backend Integration / Webhook Signature Mismatch",
