@@ -258,10 +258,18 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         # 7. AUTONOMOUS CI/CD SELF-HEALING LOOP
         elif self.path == "/api/automation/run-loop":
-            owner = data.get("owner", "Yash-Dodani")
-            repo = data.get("repo", "CI-CD-Log-Analyzer")
-            branch = data.get("branch", "main")
             token = data.get("token") or None
+            if not token:
+                self.send_json_response(401, {"error": "Authentication required. Please login with your GitHub PAT."})
+                return
+
+            owner = data.get("owner")
+            repo = data.get("repo")
+            if not owner or not repo:
+                self.send_json_response(400, {"error": "Target repository (owner and repo) is required."})
+                return
+
+            branch = data.get("branch", "main")
             log_input = data.get("log") or ""
             run_id = data.get("runId")
             mode = data.get("mode", "pr")

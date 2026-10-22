@@ -1423,10 +1423,497 @@
       height: 180px;
       overflow-y: auto;
     }
+
+    /* ================================================= */
+    /* HEROUI PRO AUTH GATE SCREEN (heroui.pro)          */
+    /* ================================================= */
+    .auth-gate-container {
+      width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: #000;
+      color: var(--text);
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 100;
+    }
+
+    .auth-gate-header {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .gate-brand-flex {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .gate-brand-text {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: #fff;
+    }
+
+    .gate-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .gate-nav-link {
+      color: var(--text-muted);
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .gate-nav-link:hover {
+      color: #fff;
+    }
+
+    .auth-gate-body {
+      flex: 1;
+      max-width: 1240px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 44px 28px 60px 28px;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    @media (max-width: 1024px) {
+      .auth-gate-body {
+        grid-template-columns: 1fr;
+        padding: 28px 20px;
+        gap: 32px;
+      }
+    }
+
+    .gate-hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #a5b4fc;
+      margin-bottom: 18px;
+    }
+
+    .gate-hero-title {
+      font-size: 40px;
+      line-height: 1.18;
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .gate-hero-gradient {
+      background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 50%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gate-hero-desc {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      max-width: 560px;
+    }
+
+    /* OTTIE MASCOT SHOWCASE CARD */
+    .gate-mascot-card {
+      background: rgba(17, 17, 21, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      margin-bottom: 24px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+
+    .gate-mascot-card::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: -40px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.25), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .gate-mascot-img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 24px rgba(99, 102, 241, 0.45));
+      animation: floatMascot 4s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes floatMascot {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .gate-mascot-text-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .gate-mascot-text-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .gate-features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .gate-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 11.5px;
+      color: var(--text-dim);
+    }
+
+    .gate-feature-icon {
+      color: #6366f1;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    /* RIGHT COLUMN: AUTH CARD */
+    .gate-auth-card {
+      background: #0b0b10;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      position: relative;
+      box-shadow: 0 0 50px rgba(99, 102, 241, 0.15), 0 20px 40px rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(20px);
+    }
+
+    .gate-card-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .gate-card-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .gate-tabs-header {
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+    }
+
+    .gate-tab-btn {
+      flex: 1;
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .gate-tab-btn.active {
+      background: rgba(99, 102, 241, 0.2);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .gate-error-banner {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #f87171;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      line-height: 1.4;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gate-scopes-badge-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 18px 0;
+    }
+
+    .gate-scope-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 10.5px;
+      color: #d4d4d8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .gate-scope-chip code {
+      color: #a5b4fc;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+
+    .gate-helper-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #818cf8;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-decoration: none;
+      margin-top: 14px;
+      transition: color 0.2s ease;
+    }
+
+    .gate-helper-link:hover {
+      color: #a5b4fc;
+      text-decoration: underline;
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- ================================================= -->
+  <!-- HEROUI PRO AUTHENTICATION GATE SCREEN             -->
+  <!-- ================================================= -->
+  <div id="auth-gate" class="auth-gate-container" style="display:flex;">
+    <!-- HEADER -->
+    <header class="auth-gate-header">
+      <div class="gate-brand-flex">
+        <img src="/assets/logo.svg" alt="CI Log Analyzer" class="brand-logo-img">
+        <div>
+          <div class="gate-brand-text">CI Log Analyzer</div>
+          <div style="font-size:10px; color:var(--text-dim);">HeroUI Observability &amp; Autonomous CI/CD</div>
+        </div>
+      </div>
+
+      <div class="gate-nav-links">
+        <a href="https://github.com/Yash-Dodani/CI-CD-Log-Analyzer" target="_blank" class="gate-nav-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub Repo
+        </a>
+        <div class="sentinel-pill" style="cursor:default; font-size:11px; padding:4px 10px;">
+          <span class="gh-status-dot"></span>
+          <span>Sentinel: Standby</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- BODY HERO CONTENT -->
+    <div class="auth-gate-body">
+      <!-- LEFT HERO COLUMN -->
+      <div>
+        <div class="gate-hero-chip">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          Next-Gen AIOps &amp; Autonomous CI/CD Sentinel
+        </div>
+
+        <h1 class="gate-hero-title">
+          Eliminate pipeline downtime with <span class="gate-hero-gradient">Autonomous AI Fixes.</span>
+        </h1>
+
+        <p class="gate-hero-desc">
+          Connect your GitHub account to access your live repositories, diagnose broken runner stacktraces in seconds, and execute closed-loop self-healing builds.
+        </p>
+
+        <!-- OTTIE MASCOT SHOWCASE -->
+        <div class="gate-mascot-card">
+          <img src="/assets/ottie/hello 1.png" alt="Ottie AI Assistant" class="gate-mascot-img">
+          <div>
+            <div class="gate-mascot-text-title">
+              <span>Meet Ottie - Your CI/CD AI Sentinel</span>
+              <span class="pill-badge" style="background:rgba(99,102,241,0.2); color:#a5b4fc; font-size:9px;">Live</span>
+            </div>
+            <div class="gate-mascot-text-desc">
+              Ottie inspects workflow logs, diagnoses error points, pushes patches directly to your git branches, and verifies builds until green.
+            </div>
+          </div>
+        </div>
+
+        <!-- HIGHLIGHTS GRID -->
+        <div class="gate-features-grid">
+          <div class="gate-feature-item">
+            <span class="gate-feature-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </span>
+            <span>Zero Mock Data - 100% Real GitHub REST API integration</span>
+          </div>
+          <div class="gate-feature-item">
+            <span class="gate-feature-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </span>
+            <span>Closed-loop automated branch creation &amp; PR dispatch</span>
+          </div>
+          <div class="gate-feature-item">
+            <span class="gate-feature-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </span>
+            <span>Local token security - credentials never leave your browser</span>
+          </div>
+          <div class="gate-feature-item">
+            <span class="gate-feature-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </span>
+            <span>Multi-LLM intelligence: OpenRouter, Gemini &amp; Groq</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT AUTH CARD COLUMN -->
+      <div>
+        <div class="gate-auth-card">
+          <div class="gate-card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            Connect GitHub Account
+          </div>
+          <div class="gate-card-sub">
+            Login with your GitHub Personal Access Token (PAT) to unlock your dashboard and private repositories.
+          </div>
+
+          <div class="gate-tabs-header">
+            <button class="gate-tab-btn active" id="gateTabBtnToken" onclick="switchGateTab('token')">Personal Access Token (PAT)</button>
+            <button class="gate-tab-btn" id="gateTabBtnGuide" onclick="switchGateTab('guide')">Quick Guide (30s)</button>
+          </div>
+
+          <!-- TAB PANEL 1: PAT INPUT FORM -->
+          <div id="gatePanelToken">
+            <div id="gateAuthError" class="gate-error-banner" style="display:none;"></div>
+
+            <div style="margin-bottom:14px;">
+              <label class="input-label" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>GitHub Personal Access Token</span>
+                <span style="font-size:10px; color:#a5b4fc; font-weight:600;">Required</span>
+              </label>
+              <div class="input-wrapper">
+                <input type="password" id="gatePatInput" class="text-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx or github_pat_..." onkeydown="if(event.key==='Enter') loginWithGatePAT()">
+                <button type="button" class="btn-secondary" id="gatePatToggleBtn" style="padding:4px 10px; font-size:11px; height:28px;" onclick="toggleGatePatVisibility()">Show</button>
+              </div>
+            </div>
+
+            <div style="font-size:11.5px; color:var(--text-dim); margin-bottom:6px;">Required Scopes for full functionality:</div>
+            <div class="gate-scopes-badge-list">
+              <span class="gate-scope-chip">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <code>repo</code> (Access Repositories)
+              </span>
+              <span class="gate-scope-chip">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <code>workflow</code> (Trigger Re-runs)
+              </span>
+            </div>
+
+            <button class="btn-primary" id="gateLoginBtn" style="width:100%; height:44px; justify-content:center; font-size:13.5px;" onclick="loginWithGatePAT()">
+              <span>Authenticate &amp; Launch Dashboard →</span>
+            </button>
+
+            <div style="text-align:center;">
+              <a href="https://github.com/settings/tokens/new?scopes=repo,workflow&description=CI-Log-Analyzer" target="_blank" class="gate-helper-link">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Generate Token on GitHub (pre-selected scopes) ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- TAB PANEL 2: 30S QUICK GUIDE -->
+          <div id="gatePanelGuide" style="display:none;">
+            <div class="instruction-box" style="margin-bottom:16px;">
+              <div class="instruction-step">
+                <div class="step-num">1</div>
+                <div>Open <a href="https://github.com/settings/tokens/new?scopes=repo,workflow&description=CI-Log-Analyzer" target="_blank" style="color:#818cf8; font-weight:700;">GitHub Token Generator ↗</a> in a new tab.</div>
+              </div>
+              <div class="instruction-step">
+                <div class="step-num">2</div>
+                <div>Verify scopes <code style="color:#a5b4fc;">repo</code> and <code style="color:#a5b4fc;">workflow</code> are checked.</div>
+              </div>
+              <div class="instruction-step">
+                <div class="step-num">3</div>
+                <div>Click <strong>"Generate token"</strong>, copy the <code style="color:#a5b4fc;">ghp_...</code> key, switch to the Token tab, and click Authenticate.</div>
+              </div>
+            </div>
+
+            <button class="btn-secondary" style="width:100%; justify-content:center;" onclick="switchGateTab('token')">
+              ← Return to Token Form
+            </button>
+          </div>
+
+          <div style="margin-top:20px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; gap:8px; font-size:11px; color:var(--text-dim);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#10b981; flex-shrink:0;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>Tokens are stored in browser LocalStorage only and are never saved on servers.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- MAIN APP SHELL (LOCKED BEHIND AUTHENTICATION)     -->
+  <!-- ================================================= -->
+  <div id="app-shell" style="display:none; width:100%; min-height:100vh;">
 
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
@@ -2369,6 +2856,7 @@
     </main>
 
   </div>
+  </div><!-- /#app-shell -->
 
   <!-- ================================================= -->
   <!-- HEROUI PRO GITHUB ONBOARDING MODAL DIALOG         -->
@@ -2980,6 +3468,7 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
         localStorage.setItem('ls_gh_token', token);
         authenticatedUser = user;
         applyAuthenticatedUser(user);
+        showAppShell();
         closeGitHubModal();
 
         // Immediately fetch user's real repositories
@@ -2994,6 +3483,123 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
       }
     }
 
+    // AUTH GATE CONTROLLER
+    function showAuthGate() {
+      const gate = document.getElementById('auth-gate');
+      const shell = document.getElementById('app-shell');
+      if (gate) gate.style.display = 'flex';
+      if (shell) shell.style.display = 'none';
+      const patInput = document.getElementById('gatePatInput');
+      if (patInput) patInput.value = '';
+      const errBanner = document.getElementById('gateAuthError');
+      if (errBanner) errBanner.style.display = 'none';
+    }
+
+    function showAppShell() {
+      const gate = document.getElementById('auth-gate');
+      const shell = document.getElementById('app-shell');
+      if (gate) gate.style.display = 'none';
+      if (shell) shell.style.display = 'flex';
+    }
+
+    function switchGateTab(tab) {
+      const btnToken = document.getElementById('gateTabBtnToken');
+      const btnGuide = document.getElementById('gateTabBtnGuide');
+      const panelToken = document.getElementById('gatePanelToken');
+      const panelGuide = document.getElementById('gatePanelGuide');
+
+      if (tab === 'token') {
+        if (btnToken) btnToken.classList.add('active');
+        if (btnGuide) btnGuide.classList.remove('active');
+        if (panelToken) panelToken.style.display = 'block';
+        if (panelGuide) panelGuide.style.display = 'none';
+      } else {
+        if (btnToken) btnToken.classList.remove('active');
+        if (btnGuide) btnGuide.classList.add('active');
+        if (panelToken) panelToken.style.display = 'none';
+        if (panelGuide) panelGuide.style.display = 'block';
+      }
+    }
+
+    function toggleGatePatVisibility() {
+      const input = document.getElementById('gatePatInput');
+      const btn = document.getElementById('gatePatToggleBtn');
+      if (!input || !btn) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = 'Hide';
+      } else {
+        input.type = 'password';
+        btn.textContent = 'Show';
+      }
+    }
+
+    async function loginWithGatePAT() {
+      const input = document.getElementById('gatePatInput');
+      const errBanner = document.getElementById('gateAuthError');
+      const btn = document.getElementById('gateLoginBtn');
+      if (!input) return;
+
+      const token = input.value.trim();
+      if (!token) {
+        if (errBanner) {
+          errBanner.style.display = 'flex';
+          errBanner.textContent = 'Please enter your GitHub Personal Access Token (PAT).';
+        }
+        input.focus();
+        return;
+      }
+
+      if (errBanner) errBanner.style.display = 'none';
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span>Verifying token with GitHub...</span>';
+      btn.disabled = true;
+
+      try {
+        let user = null;
+        try {
+          const res = await fetch('https://api.github.com/user', {
+            headers: {
+              'Authorization': 'Bearer ' + token,
+              'Accept': 'application/vnd.github.v3+json'
+            }
+          });
+          if (res.ok) user = await res.json();
+        } catch (e) { }
+
+        if (!user) {
+          const res2 = await fetch('/api/github/user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token })
+          });
+          if (res2.ok) user = await res2.json();
+        }
+
+        if (user && user.login) {
+          localStorage.setItem('ls_gh_token', token);
+          authenticatedUser = user;
+          applyAuthenticatedUser(user);
+          showAppShell();
+          await loadRealRepositories(token);
+          renderDashboardRecent();
+        } else {
+          if (errBanner) {
+            errBanner.style.display = 'flex';
+            errBanner.textContent = 'Authentication failed: Invalid GitHub Token. Please verify token permissions (repo, workflow).';
+          }
+        }
+      } catch (err) {
+        if (errBanner) {
+          errBanner.style.display = 'flex';
+          errBanner.textContent = 'Network or validation error. Please check your connection and retry.';
+        }
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+
     // DISCONNECT TOKEN
     function disconnectGitHubToken() {
       if (confirm('Are you sure you want to disconnect your GitHub Personal Access Token?')) {
@@ -3001,7 +3607,7 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
         authenticatedUser = null;
         cachedRepos = [];
         resetToUnauthenticated();
-        alert('GitHub Token disconnected.');
+        showAuthGate();
       }
     }
 
@@ -3374,7 +3980,7 @@ Error: Command failed with non-zero exit code during workflow execution.`;
       }
 
       if (!cachedRepos || cachedRepos.length === 0) {
-        sel.innerHTML = '<option value="Yash-Dodani/CI-CD-Log-Analyzer" selected>Yash-Dodani/CI-CD-Log-Analyzer (Target Default)</option>';
+        sel.innerHTML = '<option value="">No repositories loaded (Set PAT in settings)</option>';
         loadRealRepositories(token).then(() => {
           if (cachedRepos && cachedRepos.length > 0) {
             populateAutoTargetRepos();
@@ -3386,7 +3992,7 @@ Error: Command failed with non-zero exit code during workflow execution.`;
       let defaultSelected = false;
       const optionsHtml = cachedRepos.map(r => {
         const fullName = r.full_name || `${r.owner?.login || (authenticatedUser?.login || 'user')}/${r.name}`;
-        const isSelected = (!defaultSelected && (r.name === 'CI-CD-Log-Analyzer' || cachedRepos.indexOf(r) === 0));
+        const isSelected = (!defaultSelected && cachedRepos.indexOf(r) === 0);
         if (isSelected) defaultSelected = true;
         return `<option value="${fullName}" data-branch="${r.default_branch || 'main'}" ${isSelected ? 'selected' : ''}>${fullName} ${r.private ? '(Private)' : '(Public)'}</option>`;
       }).join('');
@@ -3497,8 +4103,13 @@ Error: Command failed with non-zero exit code during workflow execution.`;
       isHealingLoopRunning = true;
 
       const sel = document.getElementById('autoTargetRepoSelect');
-      const targetVal = (sel && sel.value) ? sel.value : 'Yash-Dodani/CI-CD-Log-Analyzer';
-      let [owner, repo] = targetVal.includes('/') ? targetVal.split('/') : ['Yash-Dodani', targetVal || 'CI-CD-Log-Analyzer'];
+      const targetVal = sel ? sel.value : '';
+      if (!targetVal) {
+        alert('Please select a target repository from your loaded GitHub repositories first.');
+        isHealingLoopRunning = false;
+        return;
+      }
+      let [owner, repo] = targetVal.includes('/') ? targetVal.split('/') : [(authenticatedUser?.login || ''), targetVal];
       const branch = document.getElementById('autoTargetBranchInput')?.value || 'main';
       const maxLoops = parseInt(document.getElementById('autoMaxLoopsSelect')?.value || '3', 10);
       const token = localStorage.getItem('ls_gh_token') || '';
@@ -3675,17 +4286,21 @@ Error: Command failed with non-zero exit code during workflow execution.`;
           if (user && user.login) {
             authenticatedUser = user;
             applyAuthenticatedUser(user);
+            showAppShell();
             await loadRealRepositories(token);
           } else {
+            localStorage.removeItem('ls_gh_token');
             resetToUnauthenticated();
+            showAuthGate();
           }
         } catch (e) {
+          localStorage.removeItem('ls_gh_token');
           resetToUnauthenticated();
+          showAuthGate();
         }
       } else {
         resetToUnauthenticated();
-        // Automatically prompt modal on first visit
-        setTimeout(() => openGitHubModal(), 600);
+        showAuthGate();
       }
     };
   </script>
