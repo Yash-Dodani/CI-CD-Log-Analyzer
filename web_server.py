@@ -146,8 +146,19 @@ class RequestHandler(BaseHTTPRequestHandler):
                 self.send_error(404, "Asset Not Found")
                 return
 
-        # Serve index.html dynamically from disk
-        if self.path in ["/", "/index.html", "/dashboard", "/analyze", "/history", "/integrations", "/automation", "/settings"]:
+        # 1. Serve Yline Landing Page (Mobbin Inspired)
+        if self.path in ["/", "/landing", "/landing.html"]:
+            landing_path = os.path.join(BASE_DIR, "landing.html")
+            if os.path.exists(landing_path):
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.end_headers()
+                with open(landing_path, "rb") as f:
+                    self.wfile.write(f.read())
+                return
+
+        # 2. Serve Yline Studio SaaS App
+        if self.path in ["/studio", "/studio.html", "/index.html", "/dashboard", "/analyze", "/history", "/integrations", "/automation", "/settings"] or self.path.startswith("/studio"):
             index_path = os.path.join(BASE_DIR, "index.html")
             if os.path.exists(index_path):
                 self.send_response(200)

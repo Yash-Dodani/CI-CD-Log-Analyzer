@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "yline-studio",
     "public": "public",
     "ignore": [
       "firebase.json",
@@ -8,7 +9,7 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
+        "destination": "/studio.html"
       }
     ]
   }
