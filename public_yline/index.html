@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yline - The World's Curated CI/CD Telemetry &amp; AIOps Design Library</title>
+  <meta name="description" content="Discover real-world CI/CD failure patterns, automated self-healing loops, and production-grade DevOps interfaces inspired by Mobbin.">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ================================================= */
+    /* YLINE (MOBBIN-INSPIRED) DESIGN SYSTEM             */
+    /* ================================================= */
+    :root {
+      --bg: #000000;
+      --card-bg: #0c0c10;
+      --card-hover: #121218;
+      --card-inner: #07070a;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(99, 102, 241, 0.45);
+      --accent: #6366f1;
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      --accent-glow: rgba(99, 102, 241, 0.35);
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-full: 9999px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      background-image:
+        radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        radial-gradient(ellipse 70% 40% at 50% 0%, rgba(99, 102, 241, 0.16), transparent 70%);
+      background-size: 32px 32px, 100% 100%;
+      background-position: 0 0, 0 0;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      cursor: default;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+    /* ================================================= */
+    /* OTTIE CUSTOM ANIMATED CURSOR                      */
+    /* ================================================= */
+    .ottie-cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 7px;
+      height: 7px;
+      background: #818cf8;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px #818cf8, 0 0 20px rgba(99, 102, 241, 0.6);
+      transition: opacity 0.2s ease, transform 0.1s ease;
+    }
+
+    .ottie-cursor-follower {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      will-change: transform;
+    }
+
+    .cursor-glow-ring {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(99, 102, 241, 0.5);
+      background: rgba(99, 102, 241, 0.06);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
+      transition: width 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                  height 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                  border-color 0.25s ease,
+                  background 0.25s ease,
+                  box-shadow 0.25s ease;
+    }
+
+    .cursor-mascot-wrap {
+      position: absolute;
+      top: -16px;
+      right: -20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .cursor-mascot-img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(99, 102, 241, 0.7));
+      animation: ottieFloatMini 3s ease-in-out infinite;
+    }
+
+    @keyframes ottieFloatMini {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(6deg); }
+    }
+
+    .cursor-sparkle-dot {
+      position: absolute;
+      top: -4px;
+      right: -6px;
+      font-size: 10px;
+      color: #fbbf24;
+      filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.8));
+      animation: sparklePulse 1.8s infinite;
+    }
+
+    @keyframes sparklePulse {
+      0%, 100% { transform: scale(0.8); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+
+    /* CURSOR HOVER STATE ON INTERACTIVE ELEMENTS */
+    .ottie-cursor-follower.hovering .cursor-glow-ring {
+      width: 54px;
+      height: 54px;
+      border-color: #a855f7;
+      background: rgba(168, 85, 247, 0.15);
+      box-shadow: 0 0 24px rgba(168, 85, 247, 0.5);
+    }
+
+    .ottie-cursor-follower.hovering .cursor-mascot-wrap {
+      transform: scale(1.25) translate(4px, -4px) rotate(12deg);
+    }
+
+    .sparkle-trail {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9997;
+      border-radius: 50%;
+      background: radial-gradient(circle, #c084fc 0%, transparent 70%);
+      animation: sparkleFade 0.6s linear forwards;
+    }
+
+    @keyframes sparkleFade {
+      0% { opacity: 0.9; transform: scale(1) translate(-50%, -50%); }
+      100% { opacity: 0; transform: scale(0.2) translate(-50%, -50%); }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .ottie-cursor-dot, .ottie-cursor-follower, .sparkle-trail { display: none !important; }
+    }
+
+    /* ================================================= */
+    /* DYNAMIC AURORA GLOW IN HERO                       */
+    /* ================================================= */
+    .hero-aurora-bg {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 480px;
+      background: radial-gradient(ellipse at 50% 20%, rgba(99, 102, 241, 0.22), rgba(168, 85, 247, 0.14) 40%, transparent 75%);
+      filter: blur(55px);
+      pointer-events: none;
+      z-index: 0;
+      animation: auroraShift 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes auroraShift {
+      0% { transform: translateX(-50%) scale(0.95) translateY(0); opacity: 0.75; }
+      50% { transform: translateX(-48%) scale(1.08) translateY(15px); opacity: 1; }
+      100% { transform: translateX(-52%) scale(1.02) translateY(-10px); opacity: 0.85; }
+    }
+
+    /* ================================================= */
+    /* TOP NAVIGATION (MOBBIN STYLE)                     */
+    /* ================================================= */
+    .yline-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .brand-group:hover {
+      transform: scale(1.02);
+    }
+
+    .brand-logo-img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.6));
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-pill {
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(99, 102, 241, 0.18);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      color: #a5b4fc;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-link-btn {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-link-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-link-btn.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-pill-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      color: var(--text-dim);
+      font-size: 12.5px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .search-pill-btn:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .search-key-badge {
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 2px 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    .btn-launch-studio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: var(--accent-gradient);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.45);
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .btn-launch-studio:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 28px rgba(99, 102, 241, 0.7);
+    }
+
+    /* ================================================= */
+    /* HERO SECTION (MOBBIN SIGNATURE STYLE)             */
+    /* ================================================= */
+    .hero-section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 56px 24px 32px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      color: #a5b4fc;
+      margin-bottom: 22px;
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.2);
+      animation: badgeGlowPulse 3s infinite alternate;
+    }
+
+    @keyframes badgeGlowPulse {
+      0% { border-color: rgba(99, 102, 241, 0.35); box-shadow: 0 0 14px rgba(99, 102, 241, 0.2); }
+      100% { border-color: rgba(168, 85, 247, 0.6); box-shadow: 0 0 22px rgba(168, 85, 247, 0.35); }
+    }
+
+    .hero-h1 {
+      font-size: 54px;
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -1.7px;
+      color: #fff;
+      max-width: 1000px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+      .hero-h1 { font-size: 34px; letter-spacing: -1px; }
+      .nav-links { display: none; }
+    }
+
+    .hero-gradient-text {
+      background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 45%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.35));
+    }
+
+    .hero-p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin-bottom: 34px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-action-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn-primary-large {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 26px;
+      background: var(--accent-gradient);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      box-shadow: 0 0 28px rgba(99, 102, 241, 0.5);
+      transition: all 0.25s ease;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .btn-primary-large:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 36px rgba(99, 102, 241, 0.75);
+    }
+
+    .btn-secondary-large {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #e4e4e7;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.25s ease;
+    }
+
+    .btn-secondary-large:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    /* ================================================= */
+    /* FLOATING HERO TELEMETRY CARDS                     */
+    /* ================================================= */
+    .hero-float-badge {
+      position: absolute;
+      background: rgba(14, 14, 20, 0.85);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(99, 102, 241, 0.2);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero-float-badge.float-left {
+      top: 60px;
+      left: 20px;
+      animation: floatBadge1 4.5s ease-in-out infinite;
+    }
+
+    .hero-float-badge.float-right {
+      top: 80px;
+      right: 20px;
+      animation: floatBadge2 5s ease-in-out infinite;
+    }
+
+    @keyframes floatBadge1 {
+      0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+    }
+
+    @keyframes floatBadge2 {
+      0%, 100% { transform: translateY(0) rotate(1.5deg); }
+      50% { transform: translateY(-12px) rotate(-1deg); }
+    }
+
+    @media (max-width: 1080px) {
+      .hero-float-badge { display: none; }
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .live-dot.green {
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .float-badge-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .float-badge-status {
+      font-size: 10.5px;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.12);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .float-mascot-icon {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+    }
+
+    /* ================================================= */
+    /* INFINITE ANIMATED HIGH-TECH MARQUEE RIBBON        */
+    /* ================================================= */
+    .marquee-strip-container {
+      width: 100%;
+      background: rgba(10, 10, 14, 0.95);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+      overflow: hidden;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 24s linear infinite;
+    }
+
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    .marquee-content {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      padding-right: 36px;
+    }
+
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      color: #a1a1aa;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .badge-dot-live {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #818cf8;
+      box-shadow: 0 0 8px #818cf8;
+    }
+
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ================================================= */
+    /* MOBBIN FILTER TAXONOMY ROW                        */
+    /* ================================================= */
+    .filter-wrapper {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 0 28px;
+      width: 100%;
+    }
+
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0 20px 0;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .category-pills-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      max-width: 100%;
+    }
+
+    .category-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .category-pill:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .category-pill.active {
+      background: rgba(99, 102, 241, 0.18);
+      border-color: rgba(99, 102, 241, 0.45);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .platform-toggles {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+    }
+
+    .platform-btn {
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-dim);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .platform-btn.active {
+      background: #18181b;
+      color: #fff;
+    }
+
+    /* ================================================= */
+    /* MOBBIN SHOWCASE CARD GRID (3D INTERACTIVE TILT)   */
+    /* ================================================= */
+    .showcase-grid-container {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 24px;
+    }
+
+    .showcase-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+      position: relative;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    .showcase-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), 0 0 24px rgba(99, 102, 241, 0.25);
+    }
+
+    /* CARD PREVIEW WINDOW */
+    .card-preview-window {
+      background: var(--card-inner);
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .card-bezel-header {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 2;
+    }
+
+    .bezel-dots {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .bezel-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .bezel-dot.red { background: #ef4444; }
+    .bezel-dot.yellow { background: #f59e0b; }
+    .bezel-dot.green { background: #10b981; }
+
+    .card-preview-art {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: transform 0.35s ease;
+    }
+
+    .showcase-card:hover .card-preview-art {
+      transform: scale(1.04);
+    }
+
+    .card-tag-badge {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #d4d4d8;
+    }
+
+    /* CARD METADATA */
+    .card-info-box {
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-category-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 14px;
+      flex: 1;
+    }
+
+    .card-footer-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .card-cta-link {
+      color: #818cf8;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+    }
+
+    .card-cta-link:hover {
+      color: #a5b4fc;
+      text-decoration: underline;
+    }
+
+    /* ================================================= */
+    /* OTTIE SPOTLIGHT HERO CARD                         */
+    /* ================================================= */
+    .ottie-spotlight-section {
+      max-width: 1380px;
+      margin: 40px auto;
+      padding: 0 28px;
+      width: 100%;
+    }
+
+    .ottie-banner-card {
+      background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(99, 102, 241, 0.22), transparent 70%),
+                  radial-gradient(ellipse 40% 60% at 10% 50%, rgba(168, 85, 247, 0.18), transparent 70%),
+                  #0a0a0e;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 36px;
+      box-shadow: 0 0 55px rgba(99, 102, 241, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (max-width: 860px) {
+      .ottie-banner-card { flex-direction: column; text-align: center; padding: 32px 20px; }
+    }
+
+    .ottie-banner-text {
+      max-width: 640px;
+    }
+
+    .ottie-banner-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .ottie-banner-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .ottie-banner-mascot {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      filter: drop-shadow(0 14px 34px rgba(99, 102, 241, 0.6));
+      animation: floatMascotBanner 4s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes floatMascotBanner {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* ================================================= */
+    /* PATTERN DETAIL MODAL (MOBBIN INSPECT MODE)        */
+    /* ================================================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .inspect-modal-card {
+      background: #0d0d12;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-lg);
+      max-width: 880px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+      position: relative;
+      animation: modalSlideUp 0.25s ease;
+    }
+
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .inspect-modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .inspect-close-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .inspect-close-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .inspect-modal-body {
+      padding: 28px;
+    }
+
+    /* FOOTER */
+    .yline-footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 28px;
+      margin-top: auto;
+      background: #050508;
+    }
+
+    .footer-inner {
+      max-width: 1380px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================================================= -->
+  <!-- OTTIE CURSOR FOLLOWER                             -->
+  <!-- ================================================= -->
+  <div id="cursorDot" class="ottie-cursor-dot"></div>
+  <div id="cursorFollower" class="ottie-cursor-follower">
+    <div class="cursor-glow-ring"></div>
+    <div class="cursor-mascot-wrap">
+      <img src="/assets/ottie/hello 1.png" alt="Ottie" class="cursor-mascot-img" id="cursorMascotImg">
+      <span class="cursor-sparkle-dot">✦</span>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- TOP NAVIGATION HEADER                             -->
+  <!-- ================================================= -->
+  <header class="yline-header">
+    <div class="header-inner">
+      <a href="/" class="brand-group">
+        <img src="/assets/logo.svg" alt="Yline" class="brand-logo-img">
+        <div class="brand-title">
+          <span>Yline</span>
+          <span class="brand-pill">Library</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#discover" class="nav-link-btn active" onclick="setActiveNav(this)">Discover</a>
+        <a href="#autonomous" class="nav-link-btn" onclick="filterCategory('Autonomous CI/CD')">Autonomous CI/CD</a>
+        <a href="#telemetry" class="nav-link-btn" onclick="filterCategory('GitHub Actions')">Telemetry</a>
+        <a href="#design" class="nav-link-btn" onclick="filterCategory('HeroUI Obsidian')">Design System</a>
+        <a href="/studio" target="_blank" rel="noopener noreferrer" class="nav-link-btn" style="color:#a5b4fc;">Studio SaaS ↗</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="search-pill-btn" onclick="focusSearch()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span id="searchLabel">Search patterns...</span>
+          <span class="search-key-badge">Ctrl K</span>
+        </div>
+
+        <a href="/studio" target="_blank" rel="noopener noreferrer" class="btn-launch-studio">
+          <span>Launch Studio ↗</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================================================= -->
+  <!-- HERO SECTION                                      -->
+  <!-- ================================================= -->
+  <section class="hero-section" id="discover">
+    <div class="hero-aurora-bg"></div>
+
+    <!-- FLOATING HERO TELEMETRY BADGES -->
+    <div class="hero-float-badge float-left">
+      <span class="live-dot green"></span>
+      <div>
+        <div class="float-badge-title">Self-Healing Sentinel #198</div>
+        <div class="float-badge-status">Zero Drift Verified</div>
+      </div>
+    </div>
+
+    <div class="hero-float-badge float-right">
+      <img src="/assets/ottie/idea 1.png" class="float-mascot-icon" alt="Ottie">
+      <div>
+        <div class="float-badge-title">DeepSeek AST Diagnosis</div>
+        <div style="font-size:10.5px; color:#c084fc; font-weight:700;">Auto-PR Dispatched</div>
+      </div>
+    </div>
+
+    <div class="hero-badge-pill">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      <span>Curated AIOps &amp; CI/CD Observability Archive</span>
+    </div>
+
+    <h1 class="hero-h1">
+      The Reference Library for <span class="hero-gradient-text">Autonomous CI/CD Pipelines.</span>
+    </h1>
+
+    <p class="hero-p">
+      Explore real-world pipeline failure patterns, automated self-healing loops, and production-grade DevOps interfaces inspired by Mobbin. Built for software engineers and architects shipping at scale.
+    </p>
+
+    <div class="hero-action-row">
+      <a href="/studio" target="_blank" rel="noopener noreferrer" class="btn-primary-large">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        <span>Open Yline Studio Workspace ↗</span>
+      </a>
+      <a href="https://github.com/Yash-Dodani/CI-CD-Log-Analyzer" target="_blank" rel="noopener noreferrer" class="btn-secondary-large">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        <span>GitHub Repository ↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ================================================= -->
+  <!-- HIGH-TECH INFINITE MARQUEE TICKER                 -->
+  <!-- ================================================= -->
+  <div class="marquee-strip-container">
+    <div class="marquee-track">
+      <div class="marquee-content">
+        <span class="marquee-item"><span class="badge-dot-live"></span> AUTONOMOUS CI/CD HEALING</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> DEEPSEEK REASONING DIAGNOSIS</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> 100% GITHUB ACTIONS API</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> ZERO MOCK DATA GUARANTEE</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> AST AUTOMATED PR SYNTHESIS</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> MOBBIN-INSPIRED OBSERVABILITY</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> HEROUI OBSIDIAN DARK SYSTEM</span>
+      </div>
+      <div class="marquee-content" aria-hidden="true">
+        <span class="marquee-item"><span class="badge-dot-live"></span> AUTONOMOUS CI/CD HEALING</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> DEEPSEEK REASONING DIAGNOSIS</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> 100% GITHUB ACTIONS API</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> ZERO MOCK DATA GUARANTEE</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> AST AUTOMATED PR SYNTHESIS</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> MOBBIN-INSPIRED OBSERVABILITY</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> HEROUI OBSIDIAN DARK SYSTEM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- MOBBIN-STYLE CATEGORY FILTER BAR                  -->
+  <!-- ================================================= -->
+  <div class="filter-wrapper">
+    <div class="filter-bar">
+      <div class="category-pills-row">
+        <button class="category-pill active" onclick="filterCategory('all', this)">All Patterns (248)</button>
+        <button class="category-pill" onclick="filterCategory('Autonomous CI/CD', this)">Autonomous CI/CD</button>
+        <button class="category-pill" onclick="filterCategory('GitHub Actions', this)">GitHub Actions</button>
+        <button class="category-pill" onclick="filterCategory('PyTest & Python', this)">PyTest &amp; Python</button>
+        <button class="category-pill" onclick="filterCategory('Docker & Podman', this)">Docker &amp; Containers</button>
+        <button class="category-pill" onclick="filterCategory('Node.js & NPM', this)">Node.js &amp; NPM</button>
+        <button class="category-pill" onclick="filterCategory('Flutter & Mobile', this)">Flutter &amp; Mobile</button>
+        <button class="category-pill" onclick="filterCategory('HeroUI Obsidian', this)">HeroUI Obsidian</button>
+      </div>
+
+      <div class="platform-toggles">
+        <button class="platform-btn active" onclick="setPlatformFilter('all', this)">All</button>
+        <button class="platform-btn" onclick="setPlatformFilter('cloud', this)">Cloud Runners</button>
+        <button class="platform-btn" onclick="setPlatformFilter('mobile', this)">Mobile</button>
+        <button class="platform-btn" onclick="setPlatformFilter('web', this)">Web SaaS</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- SHOWCASE CARDS GRID (MOBBIN PATTERNS)             -->
+  <!-- ================================================= -->
+  <main class="showcase-grid-container" id="showcaseGrid">
+    <!-- Populated dynamically by JavaScript -->
+  </main>
+
+  <!-- ================================================= -->
+  <!-- OTTIE AI ASSISTANT SPOTLIGHT                      -->
+  <!-- ================================================= -->
+  <section class="ottie-spotlight-section">
+    <div class="ottie-banner-card">
+      <div class="ottie-banner-text">
+        <div class="brand-pill" style="display:inline-block; margin-bottom:12px;">Autonomous Companion</div>
+        <h2 class="ottie-banner-title">Meet Ottie - Your Pipeline Healing Copilot</h2>
+        <p class="ottie-banner-desc">
+          Ottie continuously monitors your GitHub Actions workflows, extracts error points, synthesizes verified AST code patches, and triggers re-runs in a continuous closed loop until builds pass.
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="/studio" target="_blank" rel="noopener noreferrer" class="btn-primary-large" style="padding:10px 20px; font-size:13px;">
+            <span>Test Ottie in Yline Studio ↗</span>
+          </a>
+          <button class="btn-secondary-large" style="padding:10px 20px; font-size:13px;" onclick="openInspectModal(0)">
+            <span>Inspect Self-Healing Architecture ↗</span>
+          </button>
+        </div>
+      </div>
+      <img src="/assets/ottie/working 1.png" alt="Ottie at work" class="ottie-banner-mascot">
+    </div>
+  </section>
+
+  <!-- ================================================= -->
+  <!-- PATTERN DETAIL INSPECT MODAL                      -->
+  <!-- ================================================= -->
+  <div class="modal-backdrop" id="inspectModal" onclick="if(event.target===this) closeInspectModal()">
+    <div class="inspect-modal-card">
+      <div class="inspect-modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img src="/assets/logo.svg" width="22" height="22" alt="Logo">
+          <span style="font-weight:700; font-size:15px; color:#fff;" id="modalInspectTitle">Pattern Inspection</span>
+          <span class="card-category-badge" id="modalInspectCategory">DevOps</span>
+        </div>
+        <button class="inspect-close-btn" onclick="closeInspectModal()">✕</button>
+      </div>
+      <div class="inspect-modal-body" id="modalInspectBody">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- FOOTER                                            -->
+  <!-- ================================================= -->
+  <footer class="yline-footer">
+    <div class="footer-inner">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <img src="/assets/logo.svg" width="20" height="20" alt="Yline">
+        <span style="color:#fff; font-weight:700;">Yline</span>
+        <span>• Curated AIOps &amp; CI/CD Observability System</span>
+      </div>
+
+      <div style="display:flex; gap:16px;">
+        <a href="/studio" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted); text-decoration:none;">Studio SaaS ↗</a>
+        <a href="https://github.com/Yash-Dodani/CI-CD-Log-Analyzer" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted); text-decoration:none;">GitHub</a>
+        <a href="https://mobbin.com" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted); text-decoration:none;">Mobbin Inspired</a>
+        <span>© 2026 Yash Dodani. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================================================= -->
+  <!-- JAVASCRIPT PATTERNS & OTTIE CURSOR LOGIC          -->
+  <!-- ================================================= -->
+  <script>
+    const SHOWCASE_PATTERNS = [
+      {
+        id: 'pattern-1',
+        title: 'Autonomous CI/CD Self-Healing Loop',
+        category: 'Autonomous CI/CD',
+        platform: 'cloud',
+        screens: '5 Steps Loop',
+        desc: 'Continuous failure interception, root-cause AST diagnosis, git branch creation, automated PR dispatch, and workflow runner verification loop.',
+        artType: 'loop',
+        steps: ['1. Intercept Pipeline Break', '2. AI Root Cause Extraction', '3. AST Code Patch Synthesis', '4. Git Branch & PR Push', '5. Re-run Runner Verification'],
+        tags: ['AIOps', 'Closed-Loop', 'GitHub Actions']
+      },
+      {
+        id: 'pattern-2',
+        title: 'AI Root Cause Stacktrace Localizer',
+        category: 'PyTest & Python',
+        platform: 'cloud',
+        screens: 'Trace Slicer',
+        desc: 'Heuristic sliding window analyzer that extracts relevant failure stacktraces from 10,000+ line runner logs with confidence rating.',
+        artType: 'stacktrace',
+        steps: ['Raw Log Ingestion (10MB)', 'Sliding Window Noise Filter', 'Confidence Scoring (0.94)', 'Actionable Markdown Fix'],
+        tags: ['PyTest', 'Regex Windowing', 'Multi-LLM']
+      },
+      {
+        id: 'pattern-3',
+        title: 'GitHub REST API Telemetry Stream',
+        category: 'GitHub Actions',
+        platform: 'cloud',
+        screens: 'Live API',
+        desc: 'Direct bearer token communication with api.github.com for fetching private repos, live workflow runs, job logs, and re-triggering runners.',
+        artType: 'github',
+        steps: ['PAT Bearer Auth', 'Repo & Workflow Discovery', 'Raw Job Log Streaming', 'Rerun-Failed-Jobs Dispatch'],
+        tags: ['REST API', 'Zero-Mock', 'Real-Time']
+      },
+      {
+        id: 'pattern-4',
+        title: 'HeroUI Pro Obsidian Design System',
+        category: 'HeroUI Obsidian',
+        platform: 'web',
+        screens: 'Design System',
+        desc: 'Deep dark obsidian styling, glassmorphism cards, micro-animations, single-hyphen typography, and 100% vector SVG iconography.',
+        artType: 'design',
+        steps: ['HSL Tailored Tokens', 'Glassmorphism Backdrop Filter', 'Zero-Emoji Vector SVGs', 'Single Hyphen Rules'],
+        tags: ['HeroUI Pro', 'Dark Mode', 'Design Tokens']
+      },
+      {
+        id: 'pattern-5',
+        title: 'Docker & Container Build Failure Resolver',
+        category: 'Docker & Podman',
+        platform: 'cloud',
+        screens: 'Container Ops',
+        desc: 'Automated remediation for multi-stage Docker build failures, caching bottlenecks, layer invalidations, and missing base images.',
+        artType: 'docker',
+        steps: ['Dockerfile Layer Parsing', 'BuildKit Cache Analysis', 'Base Image Compatibility Check', 'Layer Optimization Patch'],
+        tags: ['Docker', 'Containers', 'BuildKit']
+      },
+      {
+        id: 'pattern-6',
+        title: 'Node.js & NPM Dependency Crash Resolver',
+        category: 'Node.js & NPM',
+        platform: 'web',
+        screens: 'NPM Lifecycle',
+        desc: 'Resolves ELIFECYCLE exit code 1, missing environment variables, polyfill omissions, and peer dependency conflicts.',
+        artType: 'npm',
+        steps: ['Exit Code 1 Interception', 'Package Lock Inspection', 'Polyfill Injection Fix', 'Clean Re-install Verification'],
+        tags: ['Node.js', 'NPM', 'Jest']
+      },
+      {
+        id: 'pattern-7',
+        title: 'Flutter Mobile Build & Gradle Resolver',
+        category: 'Flutter & Mobile',
+        platform: 'mobile',
+        screens: 'Mobile DevOps',
+        desc: 'Specialized diagnostic engine for Flutter compile errors, Gradle incompatibility, missing Android SDK licenses, and Podfile lock conflicts.',
+        artType: 'flutter',
+        steps: ['Gradle Daemon Log Inspection', 'Java & SDK Version Matching', 'CocoaPods Lockfile Alignment', 'Clean Build Verification'],
+        tags: ['Flutter', 'Android Gradle', 'iOS CocoaPods']
+      },
+      {
+        id: 'pattern-8',
+        title: 'Security-First Client-Side PAT Auth Gate',
+        category: 'HeroUI Obsidian',
+        platform: 'web',
+        screens: 'Security Gate',
+        desc: 'Zero server-side credential persistence. Personal Access Tokens remain strictly encrypted inside browser LocalStorage.',
+        artType: 'security',
+        steps: ['Client LocalStorage Encryption', 'Direct api.github.com Handshake', 'Zero Server-Side Logging', 'Instant One-Click Disconnect'],
+        tags: ['Security', 'PAT', 'Privacy']
+      }
+    ];
+
+    let currentCategory = 'all';
+    let currentPlatform = 'all';
+
+    function renderShowcaseGrid() {
+      const grid = document.getElementById('showcaseGrid');
+      if (!grid) return;
+
+      const filtered = SHOWCASE_PATTERNS.filter(item => {
+        const matchesCat = (currentCategory === 'all' || item.category === currentCategory);
+        const matchesPlat = (currentPlatform === 'all' || item.platform === currentPlatform);
+        return matchesCat && matchesPlat;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-dim);">No patterns found in this category.</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map((item, idx) => `
+        <div class="showcase-card" onmousemove="handleCardTilt(event, this)" onmouseleave="resetCardTilt(this)" onclick="openInspectModal(${SHOWCASE_PATTERNS.indexOf(item)})">
+          <div class="card-preview-window">
+            <div class="card-bezel-header">
+              <div class="bezel-dots">
+                <span class="bezel-dot red"></span>
+                <span class="bezel-dot yellow"></span>
+                <span class="bezel-dot green"></span>
+              </div>
+              <span style="font-size:10px; color:var(--text-dim); font-family:'JetBrains Mono',monospace;">${item.id}</span>
+            </div>
+
+            <div class="card-preview-art">
+              ${getPreviewArtHtml(item.artType)}
+            </div>
+
+            <div class="card-tag-badge">${item.screens}</div>
+          </div>
+
+          <div class="card-info-box">
+            <div class="card-title-row">
+              <span class="card-title">${item.title}</span>
+              <span class="card-category-badge">${item.category}</span>
+            </div>
+            <div class="card-desc">${item.desc}</div>
+
+            <div class="card-footer-flex">
+              <div style="display:flex; gap:6px;">
+                ${item.tags.map(t => `<span style="background:rgba(255,255,255,0.04); padding:2px 6px; border-radius:4px; font-size:10px;">${t}</span>`).join('')}
+              </div>
+              <span class="card-cta-link">Inspect Flow →</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      initInteractiveCursorHover();
+    }
+
+    function getPreviewArtHtml(type) {
+      if (type === 'loop') {
+        return `
+          <div style="display:flex; flex-direction:column; align-items:center; gap:8px; width:100%;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#f87171; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:700;">BREAK</div>
+              <span style="color:#6366f1;">→</span>
+              <div style="background:rgba(99,102,241,0.2); border:1px solid #6366f1; color:#a5b4fc; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:700;">AI PATCH</div>
+              <span style="color:#10b981;">→</span>
+              <div style="background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#34d399; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:700;">PASS (0)</div>
+            </div>
+            <div style="font-size:10px; color:#71717a; font-family:'JetBrains Mono',monospace;">git push -u origin ai-heal/patch-2026</div>
+          </div>
+        `;
+      } else if (type === 'stacktrace') {
+        return `
+          <div style="background:#050508; border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; width:90%; font-family:'JetBrains Mono',monospace; font-size:10.5px; line-height:1.5;">
+            <div style="color:#ef4444;">FAIL: test_auth.py:28 (assert 401 == 200)</div>
+            <div style="color:#71717a;">  Missing authorization token in headers</div>
+            <div style="color:#34d399; margin-top:4px;">+ Fix: Authorization: Bearer mock_token</div>
+          </div>
+        `;
+      } else if (type === 'github') {
+        return `
+          <div style="display:flex; align-items:center; gap:16px;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="#a5b4fc"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            <div style="font-size:12px; color:#d4d4d8;">
+              <div style="font-weight:700;">api.github.com</div>
+              <div style="color:#10b981; font-size:11px;">GET /repos/:owner/:repo/actions/runs</div>
+            </div>
+          </div>
+        `;
+      } else if (type === 'design') {
+        return `
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div style="width:48px; height:48px; border-radius:12px; background:#0b0b10; border:1px solid #6366f1; box-shadow:0 0 16px rgba(99,102,241,0.5); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800;">UI</div>
+            <div style="width:48px; height:48px; border-radius:12px; background:#10b98115; border:1px solid #10b981; display:flex; align-items:center; justify-content:center; color:#34d399; font-weight:800;">✓</div>
+            <div style="width:48px; height:48px; border-radius:12px; background:#a855f715; border:1px solid #a855f7; display:flex; align-items:center; justify-content:center; color:#c084fc; font-weight:800;">AI</div>
+          </div>
+        `;
+      } else if (type === 'docker') {
+        return `
+          <div style="text-align:center;">
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#38bdf8;">DOCKER BUILD -STAGE</div>
+            <div style="font-size:10px; color:#71717a; margin-top:4px;">Multi-Stage Cache Optimization</div>
+          </div>
+        `;
+      } else if (type === 'npm') {
+        return `
+          <div style="background:#09090d; border:1px solid rgba(255,255,255,0.08); padding:8px 14px; border-radius:8px; font-family:'JetBrains Mono',monospace; font-size:11px; color:#fbbf24;">
+            npm ERR! code ELIFECYCLE
+          </div>
+        `;
+      } else if (type === 'flutter') {
+        return `
+          <div style="text-align:center; color:#60a5fa;">
+            <div style="font-weight:800; font-size:14px;">Flutter 3.x • Gradle 8</div>
+            <div style="font-size:10px; color:#71717a; margin-top:2px;">Automated Android / iOS Toolchain</div>
+          </div>
+        `;
+      } else {
+        return `
+          <div style="display:flex; align-items:center; gap:8px; color:#10b981; font-weight:700;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>Encrypted LocalStorage</span>
+          </div>
+        `;
+      }
+    }
+
+    /* CARD 3D TILT EFFECT */
+    function handleCardTilt(e, card) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -6;
+      const rotateY = ((x - centerX) / centerX) * 6;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+    }
+
+    function resetCardTilt(card) {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+    }
+
+    function filterCategory(cat, el) {
+      currentCategory = cat;
+      document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
+      if (el) el.classList.add('active');
+      renderShowcaseGrid();
+    }
+
+    function setPlatformFilter(plat, el) {
+      currentPlatform = plat;
+      document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
+      if (el) el.classList.add('active');
+      renderShowcaseGrid();
+    }
+
+    function openInspectModal(idx) {
+      const item = SHOWCASE_PATTERNS[idx];
+      if (!item) return;
+
+      document.getElementById('modalInspectTitle').textContent = item.title;
+      document.getElementById('modalInspectCategory').textContent = item.category;
+
+      const body = document.getElementById('modalInspectBody');
+      body.innerHTML = `
+        <div style="margin-bottom:20px;">
+          <div style="font-size:14px; color:var(--text-muted); line-height:1.6; margin-bottom:18px;">${item.desc}</div>
+          
+          <div style="background:#060609; border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:20px;">
+            <div style="font-size:12px; font-weight:700; color:#fff; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">Sequential Workflow Execution:</div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              ${item.steps.map((s, i) => `
+                <div style="display:flex; align-items:center; gap:12px; font-size:13px; color:#d4d4d8;">
+                  <span style="width:22px; height:22px; border-radius:50%; background:rgba(99,102,241,0.2); color:#a5b4fc; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800;">${i+1}</span>
+                  <span>${s}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; padding-top:14px; border-top:1px solid var(--border);">
+            <div style="display:flex; gap:8px;">
+              ${item.tags.map(t => `<span class="category-pill" style="cursor:default;">${t}</span>`).join('')}
+            </div>
+            <a href="/studio" target="_blank" rel="noopener noreferrer" class="btn-primary-large" style="padding:10px 20px; font-size:13px;">
+              <span>Test This Pattern in Yline Studio ↗</span>
+            </a>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('inspectModal').classList.add('open');
+    }
+
+    function closeInspectModal() {
+      document.getElementById('inspectModal').classList.remove('open');
+    }
+
+    function focusSearch() {
+      const q = prompt('Search Yline Patterns (e.g. PyTest, Docker, Autonomous, Flutter, GitHub):');
+      if (q && q.trim()) {
+        const query = q.toLowerCase().trim();
+        const found = SHOWCASE_PATTERNS.find(p => p.title.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+        if (found) {
+          openInspectModal(SHOWCASE_PATTERNS.indexOf(found));
+        } else {
+          alert('No patterns matched "' + q + '". Showing all patterns.');
+        }
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        focusSearch();
+      }
+      if (e.key === 'Escape') {
+        closeInspectModal();
+      }
+    });
+
+    /* ================================================= */
+    /* OTTIE CURSOR PHYSICS & SPARLKE TRAIL ENGINE       */
+    /* ================================================= */
+    let mouseX = -100, mouseY = -100;
+    let followerX = -100, followerY = -100;
+    let lastSparkleTime = 0;
+    const dot = document.getElementById('cursorDot');
+    const follower = document.getElementById('cursorFollower');
+    const mascot = document.getElementById('cursorMascotImg');
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (dot) {
+        dot.style.left = mouseX + 'px';
+        dot.style.top = mouseY + 'px';
+      }
+
+      // Sparkle emission on fast movement
+      const now = performance.now();
+      if (now - lastSparkleTime > 75) {
+        lastSparkleTime = now;
+        createSparkle(mouseX, mouseY);
+      }
+    });
+
+    function createSparkle(x, y) {
+      if (window.innerWidth < 768) return;
+      const spark = document.createElement('div');
+      spark.className = 'sparkle-trail';
+      const size = Math.random() * 8 + 4;
+      spark.style.width = size + 'px';
+      spark.style.height = size + 'px';
+      spark.style.left = (x + (Math.random() * 14 - 7)) + 'px';
+      spark.style.top = (y + (Math.random() * 14 - 7)) + 'px';
+      document.body.appendChild(spark);
+      setTimeout(() => { spark.remove(); }, 600);
+    }
+
+    function updateFollower() {
+      // Smooth lerp follow
+      const dx = mouseX - followerX;
+      const dy = mouseY - followerY;
+      followerX += dx * 0.16;
+      followerY += dy * 0.16;
+
+      if (follower) {
+        follower.style.left = followerX + 'px';
+        follower.style.top = followerY + 'px';
+      }
+
+      requestAnimationFrame(updateFollower);
+    }
+
+    function initInteractiveCursorHover() {
+      const interactives = document.querySelectorAll('a, button, .category-pill, .platform-btn, .showcase-card, .search-pill-btn');
+      interactives.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          if (follower) follower.classList.add('hovering');
+        });
+        el.addEventListener('mouseleave', () => {
+          if (follower) follower.classList.remove('hovering');
+        });
+      });
+    }
+
+    window.onload = () => {
+      renderShowcaseGrid();
+      requestAnimationFrame(updateFollower);
+      initInteractiveCursorHover();
+    };
+  </script>
+</body>
+
+</html>

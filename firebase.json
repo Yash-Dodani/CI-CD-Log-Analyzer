@@ -2,7 +2,7 @@
   "hosting": [
     {
       "target": "yline",
-      "public": "public",
+      "public": "public_yline",
       "ignore": [
         "firebase.json",
         "**/.*"
@@ -18,13 +18,13 @@
         },
         {
           "source": "**",
-          "destination": "/landing.html"
+          "destination": "/index.html"
         }
       ]
     },
     {
       "target": "yline-studio",
-      "public": "public",
+      "public": "public_studio",
       "ignore": [
         "firebase.json",
         "**/.*"
@@ -32,7 +32,7 @@
       "rewrites": [
         {
           "source": "**",
-          "destination": "/studio.html"
+          "destination": "/index.html"
         }
       ]
     }
