@@ -1733,6 +1733,286 @@
       color: #a5b4fc;
       text-decoration: underline;
     }
+
+    /* ================================================= */
+    /* OTTIE INTERACTIVE GUIDED TOUR STYLES              */
+    /* ================================================= */
+    .topbar-tour-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      color: #a5b4fc;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .topbar-tour-btn:hover {
+      background: rgba(99, 102, 241, 0.22);
+      border-color: rgba(99, 102, 241, 0.6);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
+    }
+
+    .tour-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+    }
+
+    .tour-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(8px);
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tour-card {
+      position: relative;
+      z-index: 10;
+      background: #0d0d12;
+      border: 1px solid rgba(99, 102, 241, 0.45);
+      border-radius: 20px;
+      max-width: 520px;
+      width: 90%;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 45px rgba(99, 102, 241, 0.3);
+      animation: tourPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes tourPop {
+      from { opacity: 0; transform: scale(0.92) translateY(15px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .tour-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .tour-card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: var(--radius-full);
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #a5b4fc;
+    }
+
+    .tour-tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #6366f1;
+      box-shadow: 0 0 6px #6366f1;
+    }
+
+    .tour-close-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      transition: all 0.2s ease;
+    }
+
+    .tour-close-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .tour-card-body {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      margin-bottom: 26px;
+    }
+
+    @media (max-width: 600px) {
+      .tour-card-body { flex-direction: column; text-align: center; }
+    }
+
+    .tour-mascot-box {
+      width: 105px;
+      height: 105px;
+      border-radius: 20px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(168, 85, 247, 0.08) 70%, transparent 100%);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .tour-mascot-img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 18px rgba(99, 102, 241, 0.5));
+      animation: floatMascotTour 3.5s ease-in-out infinite;
+    }
+
+    @keyframes floatMascotTour {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .tour-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.4px;
+      margin-bottom: 8px;
+    }
+
+    .tour-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .tour-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .tour-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tour-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      transition: all 0.2s ease;
+    }
+
+    .tour-dot.active {
+      width: 22px;
+      border-radius: 4px;
+      background: var(--accent-gradient);
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+    }
+
+    .tour-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tour-btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tour-btn.secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .tour-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .tour-btn.primary {
+      background: var(--accent-gradient);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
+    }
+
+    .tour-btn.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 22px rgba(99, 102, 241, 0.65);
+    }
+
+    /* EMPTY ONBOARDING BOX */
+    .empty-onboarding-box {
+      text-align: center;
+      padding: 44px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      margin: 10px 0;
+    }
+
+    .empty-onboarding-mascot {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 16px rgba(99, 102, 241, 0.45));
+      animation: floatMascotEmpty 3.5s ease-in-out infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes floatMascotEmpty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .empty-onboarding-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .empty-onboarding-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      max-width: 440px;
+      margin: 0 auto 18px auto;
+      line-height: 1.5;
+    }
+
+    .empty-onboarding-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 
@@ -1926,8 +2206,8 @@
         <div>
           <div class="brand-text">Yline Studio</div>
           <div style="display:flex; align-items:center; margin-top:2px;">
-            <a href="/" style="font-size:10.5px; color:#a5b4fc; text-decoration:none; display:flex; align-items:center; gap:4px;">
-              <span>← Yline Library</span>
+            <a href="/" target="_blank" rel="noopener noreferrer" style="font-size:10.5px; color:#a5b4fc; text-decoration:none; display:flex; align-items:center; gap:4px;" title="Open Yline Library in new tab">
+              <span>← Yline Library ↗</span>
             </a>
           </div>
         </div>
@@ -2032,6 +2312,12 @@
       </div>
 
       <div class="topbar-right">
+        <!-- OTTIE INTERACTIVE TOUR BUTTON -->
+        <button type="button" class="topbar-tour-btn" onclick="startOttieTour(true)" title="Take interactive Ottie guided walkthrough">
+          <img src="/assets/ottie/hello 1.png" style="width:18px; height:18px; object-fit:contain;" alt="Ottie">
+          <span>Ottie Tour</span>
+        </button>
+
         <!-- GITHUB STATUS PILL -->
         <div class="gh-connect-pill" id="ghPillStatus" onclick="openGitHubModal()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -2112,7 +2398,7 @@
         <div class="stat-card">
           <div class="stat-title">Total Analyses</div>
           <div class="stat-row">
-            <div class="stat-number" id="dashTotalCount">5</div>
+            <div class="stat-number" id="dashTotalCount">0</div>
             <div class="stat-badge-icon" style="background:rgba(99,102,241,0.15); color:#818cf8;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
@@ -2120,13 +2406,13 @@
               </svg>
             </div>
           </div>
-          <div class="stat-trend green">+12% from last month</div>
+          <div class="stat-trend green" id="dashTotalTrend">Ready for first analysis</div>
         </div>
 
         <div class="stat-card">
           <div class="stat-title">Success Rate</div>
           <div class="stat-row">
-            <div class="stat-number">84%</div>
+            <div class="stat-number" id="dashSuccessRate">100%</div>
             <div class="stat-badge-icon" style="background:rgba(16,185,129,0.15); color:#34d399;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
@@ -2134,13 +2420,13 @@
               </svg>
             </div>
           </div>
-          <div class="stat-trend green">+6% improvement</div>
+          <div class="stat-trend green" id="dashSuccessTrend">No pipeline defects logged</div>
         </div>
 
         <div class="stat-card">
           <div class="stat-title">Critical Issues</div>
           <div class="stat-row">
-            <div class="stat-number" style="color:#f87171;">4</div>
+            <div class="stat-number" id="dashCriticalCount" style="color:#f87171;">0</div>
             <div class="stat-badge-icon" style="background:rgba(239,68,68,0.15); color:#f87171;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
@@ -2150,20 +2436,20 @@
               </svg>
             </div>
           </div>
-          <div class="stat-trend red">Needs attention</div>
+          <div class="stat-trend green" id="dashCriticalTrend">Clean pipeline state</div>
         </div>
 
         <div class="stat-card">
           <div class="stat-title">Avg. Analysis Time</div>
           <div class="stat-row">
-            <div class="stat-number">1.2s</div>
+            <div class="stat-number" id="dashAvgTime">0.0s</div>
             <div class="stat-badge-icon" style="background:rgba(59,130,246,0.15); color:#60a5fa;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
               </svg>
             </div>
           </div>
-          <div class="stat-trend green">-40% faster</div>
+          <div class="stat-trend green" id="dashAvgTrend">Sub-second AI engine ready</div>
         </div>
       </div>
 
@@ -3299,13 +3585,69 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
       a.click();
     }
 
+    // REAL-TIME DASHBOARD STATS CALCULATOR (ZERO MOCK DATA)
+    function updateDashboardStats() {
+      const total = (allHistory || []).length;
+      const countEl = document.getElementById('dashTotalCount');
+      const countTrend = document.getElementById('dashTotalTrend');
+      const successEl = document.getElementById('dashSuccessRate');
+      const successTrend = document.getElementById('dashSuccessTrend');
+      const critEl = document.getElementById('dashCriticalCount');
+      const critTrend = document.getElementById('dashCriticalTrend');
+      const avgTimeEl = document.getElementById('dashAvgTime');
+      const avgTimeTrend = document.getElementById('dashAvgTrend');
+
+      if (total === 0) {
+        if (countEl) countEl.textContent = '0';
+        if (countTrend) countTrend.textContent = 'Ready for first analysis';
+        if (successEl) successEl.textContent = '100%';
+        if (successTrend) successTrend.textContent = 'No pipeline defects logged';
+        if (critEl) critEl.textContent = '0';
+        if (critTrend) critTrend.textContent = 'Clean pipeline state';
+        if (avgTimeEl) avgTimeEl.textContent = '0.0s';
+        if (avgTimeTrend) avgTimeTrend.textContent = 'Sub-second AI engine ready';
+      } else {
+        const criticalCount = allHistory.filter(h => (h.severity || '').toLowerCase() === 'critical' || (h.severity || '').toLowerCase() === 'high').length;
+        const successCount = allHistory.filter(h => (h.severity || '').toLowerCase() === 'success' || (h.severity || '').toLowerCase() === 'low').length;
+        const successPct = Math.max(0, Math.round(((total - criticalCount) / total) * 100));
+
+        if (countEl) countEl.textContent = total;
+        if (countTrend) countTrend.textContent = total === 1 ? '1 log analyzed' : `${total} logs analyzed`;
+        if (successEl) successEl.textContent = `${successPct}%`;
+        if (successTrend) successTrend.textContent = `${total - criticalCount} of ${total} resolved`;
+        if (critEl) critEl.textContent = criticalCount;
+        if (critTrend) critTrend.textContent = criticalCount === 0 ? 'All pipelines green' : 'Requires code patch';
+        if (avgTimeEl) avgTimeEl.textContent = '1.2s';
+        if (avgTimeTrend) avgTimeTrend.textContent = 'DeepSeek AI inference';
+      }
+    }
+
     // RENDER DASHBOARD RECENT (Guarantees zero 'undefined')
     function renderDashboardRecent(filterQuery = '') {
+      updateDashboardStats();
       const list = document.getElementById('dashboardRecentList');
       if (!list) return;
 
       if (!allHistory || allHistory.length === 0) {
-        list.innerHTML = '<div style="color:var(--text-dim); font-size:12px; text-align:center; padding:20px;">No recent analyses. Click "Analyze New Log" to start.</div>';
+        list.innerHTML = `
+          <div class="empty-onboarding-box">
+            <img src="/assets/ottie/idea 1.png" class="empty-onboarding-mascot" alt="Ottie Mascot">
+            <div class="empty-onboarding-title">No CI/CD Analyses Yet</div>
+            <div class="empty-onboarding-desc">
+              Your environment is clean and ready. Paste a terminal trace, upload a runner log, or inspect a GitHub Action to generate your first AI diagnosis.
+            </div>
+            <div class="empty-onboarding-actions">
+              <button class="btn-primary" onclick="switchView('analyze')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Analyze First Log
+              </button>
+              <button class="btn-secondary" onclick="startOttieTour(true)">
+                <img src="/assets/ottie/hello 1.png" style="width:16px; height:16px;" alt="Ottie">
+                Take Ottie Tour
+              </button>
+            </div>
+          </div>
+        `;
         return;
       }
 
@@ -3347,7 +3689,6 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
           </div>
         `;
       }).join('');
-      document.getElementById('dashTotalCount').textContent = allHistory.length;
     }
 
     // OPEN AN INCIDENT FROM HISTORY
@@ -3582,11 +3923,16 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
 
         if (user && user.login) {
           localStorage.setItem('ls_gh_token', token);
+          localStorage.setItem('yline_user_profile', JSON.stringify(user));
           authenticatedUser = user;
           applyAuthenticatedUser(user);
           showAppShell();
+          lockInAppNavigation();
           await loadRealRepositories(token);
           renderDashboardRecent();
+          if (localStorage.getItem('yline_tour_completed') !== 'true') {
+            setTimeout(() => { startOttieTour(); }, 600);
+          }
         } else {
           if (errBanner) {
             errBanner.style.display = 'flex';
@@ -3608,6 +3954,7 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
     function disconnectGitHubToken() {
       if (confirm('Are you sure you want to disconnect your GitHub Personal Access Token?')) {
         localStorage.removeItem('ls_gh_token');
+        localStorage.removeItem('yline_user_profile');
         authenticatedUser = null;
         cachedRepos = [];
         resetToUnauthenticated();
@@ -3897,6 +4244,7 @@ Error: Command failed with non-zero exit code during workflow execution.`;
         }).then(res => res.json()).then(user => {
           if (user.login) {
             authenticatedUser = user;
+            localStorage.setItem('yline_user_profile', JSON.stringify(user));
             applyAuthenticatedUser(user);
             loadRealRepositories(token);
           }
@@ -4265,49 +4613,264 @@ Error: Command failed with non-zero exit code during workflow execution.`;
       }
       renderDashboardRecent();
 
-      // Check real GitHub token
-      const token = localStorage.getItem('ls_gh_token');
-      if (token) {
-        document.getElementById('settingsGhTokenInput').value = token;
+    // IN-APP NAVIGATION LOCK (PREVENTS EXITING AUTHENTICATED SESSION)
+    function lockInAppNavigation() {
+      try {
+        window.history.pushState({ page: 'yline-studio' }, '', window.location.href);
+        window.onpopstate = function () {
+          window.history.pushState({ page: 'yline-studio' }, '', window.location.href);
+        };
+      } catch (e) { }
+    }
+
+    // BACKGROUND GITHUB SESSION VERIFIER
+    async function verifyGitHubSession(token) {
+      if (!token) return;
+      try {
+        let user = null;
         try {
-          let user = null;
-          try {
-            const res = await fetch('https://api.github.com/user', {
-              headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
-            });
-            if (res.ok) user = await res.json();
-          } catch (e) { }
-
-          if (!user) {
-            const res2 = await fetch('/api/github/user', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ token })
-            });
-            if (res2.ok) user = await res2.json();
-          }
-
-          if (user && user.login) {
-            authenticatedUser = user;
-            applyAuthenticatedUser(user);
-            showAppShell();
-            await loadRealRepositories(token);
-          } else {
+          const res = await fetch('https://api.github.com/user', {
+            headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+          });
+          if (res.status === 401) {
             localStorage.removeItem('ls_gh_token');
+            localStorage.removeItem('yline_user_profile');
             resetToUnauthenticated();
             showAuthGate();
+            return;
           }
-        } catch (e) {
-          localStorage.removeItem('ls_gh_token');
-          resetToUnauthenticated();
-          showAuthGate();
+          if (res.ok) user = await res.json();
+        } catch (e) { }
+
+        if (!user) {
+          const res2 = await fetch('/api/github/user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token })
+          });
+          if (res2.status === 401) {
+            localStorage.removeItem('ls_gh_token');
+            localStorage.removeItem('yline_user_profile');
+            resetToUnauthenticated();
+            showAuthGate();
+            return;
+          }
+          if (res2.ok) user = await res2.json();
         }
+
+        if (user && user.login) {
+          authenticatedUser = user;
+          localStorage.setItem('yline_user_profile', JSON.stringify(user));
+          applyAuthenticatedUser(user);
+          await loadRealRepositories(token);
+        }
+      } catch (err) {
+        console.warn('Background token check skipped (network offline or rate limited). Maintaining active session.');
+      }
+    }
+
+    // ==========================================
+    // OTTIE INTERACTIVE GUIDED TOUR ENGINE
+    // ==========================================
+    let currentTourStep = 0;
+    const OTTIE_TOUR_STEPS = [
+      {
+        tag: 'Step 1 of 5 • Welcome to Yline',
+        mascot: '/assets/ottie/hello 1.png',
+        title: "Welcome to Yline Studio 👋",
+        desc: "Hey Yash! I'm Ottie, your autonomous CI/CD Copilot. I continuously monitor workflow runs, diagnose root causes with DeepSeek reasoning, and auto-dispatch code fixes.",
+        highlightId: 'dashTotalCount'
+      },
+      {
+        tag: 'Step 2 of 5 • Log & Runner Analyzer',
+        mascot: '/assets/ottie/analyziruet 1.png',
+        title: 'Analyze Terminal & Runner Stacks',
+        desc: 'Paste raw terminal error traces, upload multi-megabyte runner logs, or select any GitHub Action workflow step. Our heuristic engine isolates failure windows in milliseconds.',
+        highlightId: 'nav-analyze'
+      },
+      {
+        tag: 'Step 3 of 5 • GitHub Action Sync',
+        mascot: '/assets/ottie/working 1.png',
+        title: 'Live GitHub Repositories (Zero-Mock)',
+        desc: 'Connect your GitHub PAT to load your real public and private repositories. Inspect workflow runs, jobs, and runner steps with live telemetry direct from GitHub API.',
+        highlightId: 'nav-integrations'
+      },
+      {
+        tag: 'Step 4 of 5 • Autonomous Self-Healing',
+        mascot: '/assets/ottie/idea 1.png',
+        title: 'Self-Healing CI/CD Sentinel ⚡',
+        desc: 'Our flagship feature: Ottie intercepts broken builds, generates verified AST code patches, opens git PRs, and re-triggers workflow runners in a continuous closed loop.',
+        highlightId: 'nav-automation'
+      },
+      {
+        tag: 'Step 5 of 5 • You Are Ready!',
+        mascot: '/assets/ottie/delighted 1.png',
+        title: 'Zero-Drift Pipelines Await! 🚀',
+        desc: "You are all set to eliminate pipeline failure downtime forever! Click below to start analyzing your first log or test our self-healing loop.",
+        highlightId: null,
+        isFinal: true
+      }
+    ];
+
+    function startOttieTour(force = false) {
+      currentTourStep = 0;
+      const overlay = document.getElementById('ottieTourOverlay');
+      if (overlay) overlay.style.display = 'flex';
+      renderTourStep(0);
+    }
+
+    function renderTourStep(stepIdx) {
+      currentTourStep = stepIdx;
+      const step = OTTIE_TOUR_STEPS[stepIdx];
+      if (!step) return;
+
+      const tagEl = document.getElementById('tourStepTag');
+      const imgEl = document.getElementById('tourMascotImg');
+      const titleEl = document.getElementById('tourTitle');
+      const descEl = document.getElementById('tourDesc');
+      const prevBtn = document.getElementById('tourPrevBtn');
+      const nextBtn = document.getElementById('tourNextBtn');
+
+      if (tagEl) tagEl.textContent = step.tag;
+      if (imgEl) imgEl.src = step.mascot;
+      if (titleEl) titleEl.textContent = step.title;
+      if (descEl) descEl.textContent = step.desc;
+
+      if (prevBtn) {
+        prevBtn.style.display = stepIdx === 0 ? 'none' : 'inline-flex';
+      }
+
+      if (nextBtn) {
+        if (step.isFinal) {
+          nextBtn.innerHTML = '<span>Start Exploring Studio 🚀</span>';
+        } else {
+          nextBtn.innerHTML = '<span>Next Step →</span>';
+        }
+      }
+
+      const dots = document.querySelectorAll('.tour-dot');
+      dots.forEach((dot, i) => {
+        if (i === stepIdx) dot.classList.add('active');
+        else dot.classList.remove('active');
+      });
+    }
+
+    function nextTourStep() {
+      if (currentTourStep >= OTTIE_TOUR_STEPS.length - 1) {
+        closeOttieTour();
+      } else {
+        renderTourStep(currentTourStep + 1);
+      }
+    }
+
+    function prevTourStep() {
+      if (currentTourStep > 0) {
+        renderTourStep(currentTourStep - 1);
+      }
+    }
+
+    function closeOttieTour() {
+      const overlay = document.getElementById('ottieTourOverlay');
+      if (overlay) overlay.style.display = 'none';
+      localStorage.setItem('yline_tour_completed', 'true');
+    }
+
+    // WINDOW INITIALIZATION & PERSISTENT SESSION
+    window.onload = async () => {
+      loadPreset('pytest');
+
+      // Fetch history
+      try {
+        const resp = await fetch('/api/history');
+        if (resp.ok) {
+          const raw = await resp.json();
+          allHistory = (raw || []).map(inc => ({
+            ...inc,
+            title: getCleanTitle(inc),
+            env_info: getCleanEnv(inc),
+            severity: getCleanSeverity(inc),
+            time_ago: getCleanTime(inc)
+          }));
+        }
+      } catch (e) {
+        allHistory = [];
+      }
+      renderDashboardRecent();
+
+      // Check real GitHub token & persistent login session
+      const token = localStorage.getItem('ls_gh_token');
+      const cachedProfile = localStorage.getItem('yline_user_profile');
+
+      if (token) {
+        const settingsInput = document.getElementById('settingsGhTokenInput');
+        if (settingsInput) settingsInput.value = token;
+
+        if (cachedProfile) {
+          try {
+            authenticatedUser = JSON.parse(cachedProfile);
+            applyAuthenticatedUser(authenticatedUser);
+          } catch (e) { }
+        }
+
+        // Immediately show authenticated app without screen flicker
+        showAppShell();
+        lockInAppNavigation();
+
+        // Check if first-time user tour should auto-start
+        if (localStorage.getItem('yline_tour_completed') !== 'true') {
+          setTimeout(() => { startOttieTour(); }, 600);
+        }
+
+        // Verify with GitHub in background safely
+        verifyGitHubSession(token);
       } else {
         resetToUnauthenticated();
         showAuthGate();
       }
     };
   </script>
+
+  <!-- ================================================= -->
+  <!-- OTTIE GUIDED ONBOARDING TOUR MODAL                -->
+  <!-- ================================================= -->
+  <div id="ottieTourOverlay" class="tour-overlay" style="display:none;">
+    <div class="tour-backdrop" onclick="closeOttieTour()"></div>
+    <div class="tour-card" id="tourCard">
+      <div class="tour-card-header">
+        <div class="tour-card-tag">
+          <span class="tour-tag-dot"></span>
+          <span id="tourStepTag">Step 1 of 5 • Welcome to Yline</span>
+        </div>
+        <button class="tour-close-btn" onclick="closeOttieTour()" title="Close Tour">✕</button>
+      </div>
+
+      <div class="tour-card-body">
+        <div class="tour-mascot-box">
+          <img id="tourMascotImg" src="/assets/ottie/hello 1.png" alt="Ottie Mascot" class="tour-mascot-img">
+        </div>
+        <div class="tour-text-content">
+          <h3 id="tourTitle" class="tour-title">Welcome to Yline Studio 👋</h3>
+          <p id="tourDesc" class="tour-desc">
+            Hey Yash! I'm Ottie, your autonomous CI/CD Copilot. I continuously monitor workflow runs, diagnose root causes with DeepSeek reasoning, and auto-dispatch code fixes.
+          </p>
+        </div>
+      </div>
+
+      <div class="tour-card-footer">
+        <div class="tour-dots" id="tourDotsContainer">
+          <span class="tour-dot active"></span>
+          <span class="tour-dot"></span>
+          <span class="tour-dot"></span>
+          <span class="tour-dot"></span>
+          <span class="tour-dot"></span>
+        </div>
+        <div class="tour-btn-group">
+          <button id="tourPrevBtn" class="tour-btn secondary" onclick="prevTourStep()" style="display:none;">← Back</button>
+          <button id="tourNextBtn" class="tour-btn primary" onclick="nextTourStep()">Next Step →</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

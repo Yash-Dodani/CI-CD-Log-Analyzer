@@ -40,7 +40,7 @@
       background: var(--bg);
       background-image:
         radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        radial-gradient(ellipse 70% 40% at 50% 0%, rgba(99, 102, 241, 0.14), transparent 70%);
+        radial-gradient(ellipse 70% 40% at 50% 0%, rgba(99, 102, 241, 0.16), transparent 70%);
       background-size: 32px 32px, 100% 100%;
       background-position: 0 0, 0 0;
       color: var(--text);
@@ -49,6 +49,7 @@
       flex-direction: column;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      cursor: default;
     }
 
     /* SCROLLBAR */
@@ -58,14 +59,152 @@
     ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
 
     /* ================================================= */
+    /* OTTIE CUSTOM ANIMATED CURSOR                      */
+    /* ================================================= */
+    .ottie-cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 7px;
+      height: 7px;
+      background: #818cf8;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px #818cf8, 0 0 20px rgba(99, 102, 241, 0.6);
+      transition: opacity 0.2s ease, transform 0.1s ease;
+    }
+
+    .ottie-cursor-follower {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      will-change: transform;
+    }
+
+    .cursor-glow-ring {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(99, 102, 241, 0.5);
+      background: rgba(99, 102, 241, 0.06);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
+      transition: width 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                  height 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                  border-color 0.25s ease,
+                  background 0.25s ease,
+                  box-shadow 0.25s ease;
+    }
+
+    .cursor-mascot-wrap {
+      position: absolute;
+      top: -16px;
+      right: -20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .cursor-mascot-img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(99, 102, 241, 0.7));
+      animation: ottieFloatMini 3s ease-in-out infinite;
+    }
+
+    @keyframes ottieFloatMini {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(6deg); }
+    }
+
+    .cursor-sparkle-dot {
+      position: absolute;
+      top: -4px;
+      right: -6px;
+      font-size: 10px;
+      color: #fbbf24;
+      filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.8));
+      animation: sparklePulse 1.8s infinite;
+    }
+
+    @keyframes sparklePulse {
+      0%, 100% { transform: scale(0.8); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+
+    /* CURSOR HOVER STATE ON INTERACTIVE ELEMENTS */
+    .ottie-cursor-follower.hovering .cursor-glow-ring {
+      width: 54px;
+      height: 54px;
+      border-color: #a855f7;
+      background: rgba(168, 85, 247, 0.15);
+      box-shadow: 0 0 24px rgba(168, 85, 247, 0.5);
+    }
+
+    .ottie-cursor-follower.hovering .cursor-mascot-wrap {
+      transform: scale(1.25) translate(4px, -4px) rotate(12deg);
+    }
+
+    .sparkle-trail {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9997;
+      border-radius: 50%;
+      background: radial-gradient(circle, #c084fc 0%, transparent 70%);
+      animation: sparkleFade 0.6s linear forwards;
+    }
+
+    @keyframes sparkleFade {
+      0% { opacity: 0.9; transform: scale(1) translate(-50%, -50%); }
+      100% { opacity: 0; transform: scale(0.2) translate(-50%, -50%); }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .ottie-cursor-dot, .ottie-cursor-follower, .sparkle-trail { display: none !important; }
+    }
+
+    /* ================================================= */
+    /* DYNAMIC AURORA GLOW IN HERO                       */
+    /* ================================================= */
+    .hero-aurora-bg {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 480px;
+      background: radial-gradient(ellipse at 50% 20%, rgba(99, 102, 241, 0.22), rgba(168, 85, 247, 0.14) 40%, transparent 75%);
+      filter: blur(55px);
+      pointer-events: none;
+      z-index: 0;
+      animation: auroraShift 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes auroraShift {
+      0% { transform: translateX(-50%) scale(0.95) translateY(0); opacity: 0.75; }
+      50% { transform: translateX(-48%) scale(1.08) translateY(15px); opacity: 1; }
+      100% { transform: translateX(-52%) scale(1.02) translateY(-10px); opacity: 0.85; }
+    }
+
+    /* ================================================= */
     /* TOP NAVIGATION (MOBBIN STYLE)                     */
     /* ================================================= */
     .yline-header {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(16px);
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
     }
 
@@ -77,6 +216,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 20px;
+      position: relative;
+      z-index: 2;
     }
 
     .brand-group {
@@ -84,13 +225,18 @@
       align-items: center;
       gap: 12px;
       text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .brand-group:hover {
+      transform: scale(1.02);
     }
 
     .brand-logo-img {
       width: 32px;
       height: 32px;
       object-fit: contain;
-      filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
+      filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.6));
     }
 
     .brand-title {
@@ -136,12 +282,12 @@
 
     .nav-link-btn:hover {
       color: #fff;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .nav-link-btn.active {
       color: #fff;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.09);
     }
 
     .header-actions {
@@ -191,27 +337,28 @@
       font-weight: 700;
       border-radius: var(--radius-full);
       text-decoration: none;
-      box-shadow: 0 0 18px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.45);
       transition: all 0.2s ease;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .btn-launch-studio:hover {
       transform: translateY(-1px);
-      box-shadow: 0 0 24px rgba(99, 102, 241, 0.6);
+      box-shadow: 0 0 28px rgba(99, 102, 241, 0.7);
     }
 
     /* ================================================= */
     /* HERO SECTION (MOBBIN SIGNATURE STYLE)             */
     /* ================================================= */
     .hero-section {
-      max-width: 1240px;
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 60px 24px 36px 24px;
+      padding: 56px 24px 32px 24px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
     }
 
     .hero-badge-pill {
@@ -220,26 +367,35 @@
       gap: 8px;
       padding: 6px 14px;
       background: rgba(99, 102, 241, 0.12);
-      border: 1px solid rgba(99, 102, 241, 0.3);
+      border: 1px solid rgba(99, 102, 241, 0.35);
       border-radius: var(--radius-full);
       font-size: 12px;
       font-weight: 700;
       color: #a5b4fc;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.2);
+      animation: badgeGlowPulse 3s infinite alternate;
+    }
+
+    @keyframes badgeGlowPulse {
+      0% { border-color: rgba(99, 102, 241, 0.35); box-shadow: 0 0 14px rgba(99, 102, 241, 0.2); }
+      100% { border-color: rgba(168, 85, 247, 0.6); box-shadow: 0 0 22px rgba(168, 85, 247, 0.35); }
     }
 
     .hero-h1 {
-      font-size: 52px;
-      line-height: 1.12;
+      font-size: 54px;
+      line-height: 1.1;
       font-weight: 800;
-      letter-spacing: -1.6px;
+      letter-spacing: -1.7px;
       color: #fff;
-      max-width: 980px;
-      margin-bottom: 18px;
+      max-width: 1000px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
     }
 
     @media (max-width: 768px) {
-      .hero-h1 { font-size: 36px; letter-spacing: -1px; }
+      .hero-h1 { font-size: 34px; letter-spacing: -1px; }
       .nav-links { display: none; }
     }
 
@@ -247,6 +403,7 @@
       background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 45%, #f472b6 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.35));
     }
 
     .hero-p {
@@ -254,7 +411,9 @@
       line-height: 1.6;
       color: var(--text-muted);
       max-width: 680px;
-      margin-bottom: 32px;
+      margin-bottom: 34px;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-action-row {
@@ -263,7 +422,9 @@
       gap: 14px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 2;
     }
 
     .btn-primary-large {
@@ -277,14 +438,14 @@
       font-weight: 700;
       border-radius: var(--radius-full);
       text-decoration: none;
-      box-shadow: 0 0 24px rgba(99, 102, 241, 0.45);
-      transition: all 0.2s ease;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 28px rgba(99, 102, 241, 0.5);
+      transition: all 0.25s ease;
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .btn-primary-large:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 32px rgba(99, 102, 241, 0.65);
+      box-shadow: 0 0 36px rgba(99, 102, 241, 0.75);
     }
 
     .btn-secondary-large {
@@ -299,12 +460,145 @@
       border-radius: var(--radius-full);
       text-decoration: none;
       border: 1px solid var(--border);
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
     }
 
     .btn-secondary-large:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    /* ================================================= */
+    /* FLOATING HERO TELEMETRY CARDS                     */
+    /* ================================================= */
+    .hero-float-badge {
+      position: absolute;
+      background: rgba(14, 14, 20, 0.85);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(99, 102, 241, 0.2);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero-float-badge.float-left {
+      top: 60px;
+      left: 20px;
+      animation: floatBadge1 4.5s ease-in-out infinite;
+    }
+
+    .hero-float-badge.float-right {
+      top: 80px;
+      right: 20px;
+      animation: floatBadge2 5s ease-in-out infinite;
+    }
+
+    @keyframes floatBadge1 {
+      0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+    }
+
+    @keyframes floatBadge2 {
+      0%, 100% { transform: translateY(0) rotate(1.5deg); }
+      50% { transform: translateY(-12px) rotate(-1deg); }
+    }
+
+    @media (max-width: 1080px) {
+      .hero-float-badge { display: none; }
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .live-dot.green {
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .float-badge-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .float-badge-status {
+      font-size: 10.5px;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.12);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .float-mascot-icon {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+    }
+
+    /* ================================================= */
+    /* INFINITE ANIMATED HIGH-TECH MARQUEE RIBBON        */
+    /* ================================================= */
+    .marquee-strip-container {
+      width: 100%;
+      background: rgba(10, 10, 14, 0.95);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+      overflow: hidden;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 24s linear infinite;
+    }
+
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    .marquee-content {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      padding-right: 36px;
+    }
+
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      color: #a1a1aa;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .badge-dot-live {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #818cf8;
+      box-shadow: 0 0 8px #818cf8;
+    }
+
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
     }
 
     /* ================================================= */
@@ -392,7 +686,7 @@
     }
 
     /* ================================================= */
-    /* MOBBIN SHOWCASE CARD GRID                         */
+    /* MOBBIN SHOWCASE CARD GRID (3D INTERACTIVE TILT)   */
     /* ================================================= */
     .showcase-grid-container {
       max-width: 1380px;
@@ -411,14 +705,15 @@
       display: flex;
       flex-direction: column;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
       position: relative;
+      transform-style: preserve-3d;
+      perspective: 1000px;
     }
 
     .showcase-card:hover {
       border-color: var(--border-hover);
-      transform: translateY(-4px);
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6), 0 0 20px rgba(99, 102, 241, 0.15);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), 0 0 24px rgba(99, 102, 241, 0.25);
     }
 
     /* CARD PREVIEW WINDOW */
@@ -468,18 +763,18 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-      transition: transform 0.3s ease;
+      transition: transform 0.35s ease;
     }
 
     .showcase-card:hover .card-preview-art {
-      transform: scale(1.03);
+      transform: scale(1.04);
     }
 
     .card-tag-badge {
       position: absolute;
       bottom: 10px;
       right: 12px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 3px 8px;
@@ -564,8 +859,8 @@
     }
 
     .ottie-banner-card {
-      background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(99, 102, 241, 0.2), transparent 70%),
-                  radial-gradient(ellipse 40% 60% at 10% 50%, rgba(168, 85, 247, 0.15), transparent 70%),
+      background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(99, 102, 241, 0.22), transparent 70%),
+                  radial-gradient(ellipse 40% 60% at 10% 50%, rgba(168, 85, 247, 0.18), transparent 70%),
                   #0a0a0e;
       border: 1px solid rgba(99, 102, 241, 0.35);
       border-radius: var(--radius-lg);
@@ -574,7 +869,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 36px;
-      box-shadow: 0 0 50px rgba(99, 102, 241, 0.15);
+      box-shadow: 0 0 55px rgba(99, 102, 241, 0.2);
       position: relative;
       overflow: hidden;
     }
@@ -606,14 +901,14 @@
       width: 180px;
       height: 180px;
       object-fit: contain;
-      filter: drop-shadow(0 12px 30px rgba(99, 102, 241, 0.5));
-      animation: floatMascot 4s ease-in-out infinite;
+      filter: drop-shadow(0 14px 34px rgba(99, 102, 241, 0.6));
+      animation: floatMascotBanner 4s ease-in-out infinite;
       flex-shrink: 0;
     }
 
-    @keyframes floatMascot {
+    @keyframes floatMascotBanner {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      50% { transform: translateY(-10px); }
     }
 
     /* ================================================= */
@@ -622,9 +917,9 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(14px);
-      z-index: 100;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
       display: none;
       align-items: center;
       justify-content: center;
@@ -643,7 +938,7 @@
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
       position: relative;
       animation: modalSlideUp 0.25s ease;
     }
@@ -710,6 +1005,18 @@
 <body>
 
   <!-- ================================================= -->
+  <!-- OTTIE CURSOR FOLLOWER                             -->
+  <!-- ================================================= -->
+  <div id="cursorDot" class="ottie-cursor-dot"></div>
+  <div id="cursorFollower" class="ottie-cursor-follower">
+    <div class="cursor-glow-ring"></div>
+    <div class="cursor-mascot-wrap">
+      <img src="/assets/ottie/hello 1.png" alt="Ottie" class="cursor-mascot-img" id="cursorMascotImg">
+      <span class="cursor-sparkle-dot">✦</span>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
   <!-- TOP NAVIGATION HEADER                             -->
   <!-- ================================================= -->
   <header class="yline-header">
@@ -727,7 +1034,7 @@
         <a href="#autonomous" class="nav-link-btn" onclick="filterCategory('Autonomous CI/CD')">Autonomous CI/CD</a>
         <a href="#telemetry" class="nav-link-btn" onclick="filterCategory('GitHub Actions')">Telemetry</a>
         <a href="#design" class="nav-link-btn" onclick="filterCategory('HeroUI Obsidian')">Design System</a>
-        <a href="/studio" class="nav-link-btn" style="color:#a5b4fc;">Studio SaaS</a>
+        <a href="/studio" target="_blank" rel="noopener noreferrer" class="nav-link-btn" style="color:#a5b4fc;">Studio SaaS ↗</a>
       </nav>
 
       <div class="header-actions">
@@ -737,8 +1044,8 @@
           <span class="search-key-badge">Ctrl K</span>
         </div>
 
-        <a href="/studio" class="btn-launch-studio">
-          <span>Launch Studio →</span>
+        <a href="/studio" target="_blank" rel="noopener noreferrer" class="btn-launch-studio">
+          <span>Launch Studio ↗</span>
         </a>
       </div>
     </div>
@@ -748,6 +1055,25 @@
   <!-- HERO SECTION                                      -->
   <!-- ================================================= -->
   <section class="hero-section" id="discover">
+    <div class="hero-aurora-bg"></div>
+
+    <!-- FLOATING HERO TELEMETRY BADGES -->
+    <div class="hero-float-badge float-left">
+      <span class="live-dot green"></span>
+      <div>
+        <div class="float-badge-title">Self-Healing Sentinel #198</div>
+        <div class="float-badge-status">Zero Drift Verified</div>
+      </div>
+    </div>
+
+    <div class="hero-float-badge float-right">
+      <img src="/assets/ottie/idea 1.png" class="float-mascot-icon" alt="Ottie">
+      <div>
+        <div class="float-badge-title">DeepSeek AST Diagnosis</div>
+        <div style="font-size:10.5px; color:#c084fc; font-weight:700;">Auto-PR Dispatched</div>
+      </div>
+    </div>
+
     <div class="hero-badge-pill">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
       <span>Curated AIOps &amp; CI/CD Observability Archive</span>
@@ -762,16 +1088,42 @@
     </p>
 
     <div class="hero-action-row">
-      <a href="/studio" class="btn-primary-large">
+      <a href="/studio" target="_blank" rel="noopener noreferrer" class="btn-primary-large">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-        <span>Open Yline Studio Workspace →</span>
+        <span>Open Yline Studio Workspace ↗</span>
       </a>
-      <a href="https://github.com/Yash-Dodani/CI-CD-Log-Analyzer" target="_blank" class="btn-secondary-large">
+      <a href="https://github.com/Yash-Dodani/CI-CD-Log-Analyzer" target="_blank" rel="noopener noreferrer" class="btn-secondary-large">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
         <span>GitHub Repository ↗</span>
       </a>
     </div>
   </section>
+
+  <!-- ================================================= -->
+  <!-- HIGH-TECH INFINITE MARQUEE TICKER                 -->
+  <!-- ================================================= -->
+  <div class="marquee-strip-container">
+    <div class="marquee-track">
+      <div class="marquee-content">
+        <span class="marquee-item"><span class="badge-dot-live"></span> AUTONOMOUS CI/CD HEALING</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> DEEPSEEK REASONING DIAGNOSIS</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> 100% GITHUB ACTIONS API</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> ZERO MOCK DATA GUARANTEE</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> AST AUTOMATED PR SYNTHESIS</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> MOBBIN-INSPIRED OBSERVABILITY</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> HEROUI OBSIDIAN DARK SYSTEM</span>
+      </div>
+      <div class="marquee-content" aria-hidden="true">
+        <span class="marquee-item"><span class="badge-dot-live"></span> AUTONOMOUS CI/CD HEALING</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> DEEPSEEK REASONING DIAGNOSIS</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> 100% GITHUB ACTIONS API</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> ZERO MOCK DATA GUARANTEE</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> AST AUTOMATED PR SYNTHESIS</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> MOBBIN-INSPIRED OBSERVABILITY</span>
+        <span class="marquee-item"><span class="badge-dot-live"></span> HEROUI OBSIDIAN DARK SYSTEM</span>
+      </div>
+    </div>
+  </div>
 
   <!-- ================================================= -->
   <!-- MOBBIN-STYLE CATEGORY FILTER BAR                  -->
@@ -817,8 +1169,8 @@
           Ottie continuously monitors your GitHub Actions workflows, extracts error points, synthesizes verified AST code patches, and triggers re-runs in a continuous closed loop until builds pass.
         </p>
         <div style="display:flex; gap:12px; flex-wrap:wrap;">
-          <a href="/studio" class="btn-primary-large" style="padding:10px 20px; font-size:13px;">
-            <span>Test Ottie in Yline Studio →</span>
+          <a href="/studio" target="_blank" rel="noopener noreferrer" class="btn-primary-large" style="padding:10px 20px; font-size:13px;">
+            <span>Test Ottie in Yline Studio ↗</span>
           </a>
           <button class="btn-secondary-large" style="padding:10px 20px; font-size:13px;" onclick="openInspectModal(0)">
             <span>Inspect Self-Healing Architecture ↗</span>
@@ -860,16 +1212,16 @@
       </div>
 
       <div style="display:flex; gap:16px;">
-        <a href="/studio" style="color:var(--text-muted); text-decoration:none;">Studio SaaS</a>
-        <a href="https://github.com/Yash-Dodani/CI-CD-Log-Analyzer" target="_blank" style="color:var(--text-muted); text-decoration:none;">GitHub</a>
-        <a href="https://mobbin.com" target="_blank" style="color:var(--text-muted); text-decoration:none;">Mobbin Inspired</a>
+        <a href="/studio" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted); text-decoration:none;">Studio SaaS ↗</a>
+        <a href="https://github.com/Yash-Dodani/CI-CD-Log-Analyzer" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted); text-decoration:none;">GitHub</a>
+        <a href="https://mobbin.com" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted); text-decoration:none;">Mobbin Inspired</a>
         <span>© 2026 Yash Dodani. All rights reserved.</span>
       </div>
     </div>
   </footer>
 
   <!-- ================================================= -->
-  <!-- JAVASCRIPT PATTERNS LOGIC                         -->
+  <!-- JAVASCRIPT PATTERNS & OTTIE CURSOR LOGIC          -->
   <!-- ================================================= -->
   <script>
     const SHOWCASE_PATTERNS = [
@@ -982,7 +1334,7 @@
       }
 
       grid.innerHTML = filtered.map((item, idx) => `
-        <div class="showcase-card" onclick="openInspectModal(${SHOWCASE_PATTERNS.indexOf(item)})">
+        <div class="showcase-card" onmousemove="handleCardTilt(event, this)" onmouseleave="resetCardTilt(this)" onclick="openInspectModal(${SHOWCASE_PATTERNS.indexOf(item)})">
           <div class="card-preview-window">
             <div class="card-bezel-header">
               <div class="bezel-dots">
@@ -1016,6 +1368,8 @@
           </div>
         </div>
       `).join('');
+
+      initInteractiveCursorHover();
     }
 
     function getPreviewArtHtml(type) {
@@ -1061,7 +1415,7 @@
       } else if (type === 'docker') {
         return `
           <div style="text-align:center;">
-            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#38bdf8;">DOCKER BUILD --STAGE</div>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#38bdf8;">DOCKER BUILD -STAGE</div>
             <div style="font-size:10px; color:#71717a; margin-top:4px;">Multi-Stage Cache Optimization</div>
           </div>
         `;
@@ -1086,6 +1440,23 @@
           </div>
         `;
       }
+    }
+
+    /* CARD 3D TILT EFFECT */
+    function handleCardTilt(e, card) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -6;
+      const rotateY = ((x - centerX) / centerX) * 6;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+    }
+
+    function resetCardTilt(card) {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
     }
 
     function filterCategory(cat, el) {
@@ -1130,8 +1501,8 @@
             <div style="display:flex; gap:8px;">
               ${item.tags.map(t => `<span class="category-pill" style="cursor:default;">${t}</span>`).join('')}
             </div>
-            <a href="/studio" class="btn-primary-large" style="padding:10px 20px; font-size:13px;">
-              <span>Test This Pattern in Yline Studio →</span>
+            <a href="/studio" target="_blank" rel="noopener noreferrer" class="btn-primary-large" style="padding:10px 20px; font-size:13px;">
+              <span>Test This Pattern in Yline Studio ↗</span>
             </a>
           </div>
         </div>
@@ -1167,8 +1538,77 @@
       }
     });
 
+    /* ================================================= */
+    /* OTTIE CURSOR PHYSICS & SPARLKE TRAIL ENGINE       */
+    /* ================================================= */
+    let mouseX = -100, mouseY = -100;
+    let followerX = -100, followerY = -100;
+    let lastSparkleTime = 0;
+    const dot = document.getElementById('cursorDot');
+    const follower = document.getElementById('cursorFollower');
+    const mascot = document.getElementById('cursorMascotImg');
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (dot) {
+        dot.style.left = mouseX + 'px';
+        dot.style.top = mouseY + 'px';
+      }
+
+      // Sparkle emission on fast movement
+      const now = performance.now();
+      if (now - lastSparkleTime > 75) {
+        lastSparkleTime = now;
+        createSparkle(mouseX, mouseY);
+      }
+    });
+
+    function createSparkle(x, y) {
+      if (window.innerWidth < 768) return;
+      const spark = document.createElement('div');
+      spark.className = 'sparkle-trail';
+      const size = Math.random() * 8 + 4;
+      spark.style.width = size + 'px';
+      spark.style.height = size + 'px';
+      spark.style.left = (x + (Math.random() * 14 - 7)) + 'px';
+      spark.style.top = (y + (Math.random() * 14 - 7)) + 'px';
+      document.body.appendChild(spark);
+      setTimeout(() => { spark.remove(); }, 600);
+    }
+
+    function updateFollower() {
+      // Smooth lerp follow
+      const dx = mouseX - followerX;
+      const dy = mouseY - followerY;
+      followerX += dx * 0.16;
+      followerY += dy * 0.16;
+
+      if (follower) {
+        follower.style.left = followerX + 'px';
+        follower.style.top = followerY + 'px';
+      }
+
+      requestAnimationFrame(updateFollower);
+    }
+
+    function initInteractiveCursorHover() {
+      const interactives = document.querySelectorAll('a, button, .category-pill, .platform-btn, .showcase-card, .search-pill-btn');
+      interactives.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          if (follower) follower.classList.add('hovering');
+        });
+        el.addEventListener('mouseleave', () => {
+          if (follower) follower.classList.remove('hovering');
+        });
+      });
+    }
+
     window.onload = () => {
       renderShowcaseGrid();
+      requestAnimationFrame(updateFollower);
+      initInteractiveCursorHover();
     };
   </script>
 </body>

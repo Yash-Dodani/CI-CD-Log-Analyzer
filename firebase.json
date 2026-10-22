@@ -1,16 +1,40 @@
 {
-  "hosting": {
-    "site": "yline-studio",
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/studio.html"
-      }
-    ]
-  }
+  "hosting": [
+    {
+      "target": "yline",
+      "public": "public",
+      "ignore": [
+        "firebase.json",
+        "**/.*"
+      ],
+      "rewrites": [
+        {
+          "source": "/studio/**",
+          "destination": "/studio.html"
+        },
+        {
+          "source": "/studio",
+          "destination": "/studio.html"
+        },
+        {
+          "source": "**",
+          "destination": "/landing.html"
+        }
+      ]
+    },
+    {
+      "target": "yline-studio",
+      "public": "public",
+      "ignore": [
+        "firebase.json",
+        "**/.*"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/studio.html"
+        }
+      ]
+    }
+  ]
 }
