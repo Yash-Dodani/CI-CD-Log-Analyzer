@@ -334,9 +334,9 @@ def fetch_github_user(token: str) -> Dict[str, Any]:
 def fetch_github_repos(token: Optional[str] = None, username: Optional[str] = None) -> List[Dict[str, Any]]:
     """Fetches repositories for authenticated user or public repos for a username."""
     if token:
-        url = "https://api.github.com/user/repos?sort=updated&per_page=50&type=all"
+        url = "https://api.github.com/user/repos?sort=updated&per_page=100&affiliation=owner,collaborator,organization_member"
     elif username:
-        url = f"https://api.github.com/users/{username.strip()}/repos?sort=updated&per_page=50"
+        url = f"https://api.github.com/users/{username.strip()}/repos?sort=updated&per_page=100"
     else:
         raise ValueError("Either token or username must be provided")
 

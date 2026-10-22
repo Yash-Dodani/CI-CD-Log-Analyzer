@@ -99,14 +99,107 @@
       position: sticky;
       top: 0;
       z-index: 40;
+      transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), padding 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* COLLAPSIBLE SIDEBAR (ChatGPT / Claude / Grok Style) */
+    .sidebar.collapsed {
+      width: 68px;
+      padding: 20px 8px;
+    }
+
+    .sidebar.collapsed .brand-info,
+    .sidebar.collapsed .nav-item span:not(.nav-icon),
+    .sidebar.collapsed .nav-item .pill-badge,
+    .sidebar.collapsed .sidebar-card-info {
+      opacity: 0;
+      display: none !important;
+      pointer-events: none;
+    }
+
+    .sidebar.collapsed .brand {
+      justify-content: center;
+      padding: 4px 0 16px 0;
+    }
+
+    .sidebar.collapsed .sidebar-header-row {
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .sidebar.collapsed .nav-item {
+      justify-content: center;
+      padding: 10px 0;
+      position: relative;
+    }
+
+    .sidebar.collapsed .sidebar-card {
+      padding: 8px 0;
+      justify-content: center;
+    }
+
+    .sidebar.collapsed .sidebar-card-img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .sidebar.collapsed .nav-item[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: calc(100% + 12px);
+      top: 50%;
+      transform: translateY(-50%);
+      background: #18181b;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .sidebar-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-toggle-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-md);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .sidebar-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-color: rgba(99, 102, 241, 0.4);
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 6px 10px 22px 10px;
+      padding: 4px 6px;
       text-decoration: none;
+      flex: 1;
+      min-width: 0;
     }
 
     .brand-logo-img {
@@ -2013,6 +2106,344 @@
       gap: 12px;
       flex-wrap: wrap;
     }
+
+    /* ================================================= */
+    /* TOPBAR NOTIFICATION BELL & DROPDOWN               */
+    /* ================================================= */
+    .topbar-bell-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .topbar-bell-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+    }
+
+    .notif-badge-dot {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #818cf8;
+      box-shadow: 0 0 8px #6366f1;
+    }
+
+    .notif-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 320px;
+      background: #0d0d12;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(99, 102, 241, 0.15);
+      border-radius: var(--radius-lg);
+      z-index: 1000;
+      padding: 14px;
+      animation: modalSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .notif-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      margin-bottom: 10px;
+    }
+
+    .notif-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .notif-count-pill {
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: var(--radius-full);
+    }
+
+    .notif-clear-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 11px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.2s;
+    }
+
+    .notif-clear-btn:hover {
+      color: #a5b4fc;
+    }
+
+    .notif-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .notif-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background 0.2s;
+    }
+
+    .notif-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .notif-item-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .notif-item-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .notif-item-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .notif-item-desc {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+
+    .notif-item-time {
+      font-size: 9.5px;
+      color: var(--text-dim);
+      margin-top: 3px;
+    }
+
+    /* ================================================= */
+    /* ANALYZE LOGS STEP CARDS (STEP-BY-STEP LAYOUT)     */
+    /* ================================================= */
+    .analyze-step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s ease;
+    }
+
+    .analyze-step-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .analyze-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .analyze-step-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .analyze-step-tag .step-num {
+      background: var(--accent-gradient);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.3px;
+    }
+
+    .analyze-step-tag .step-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .analyze-dispatch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .analyze-dispatch-info {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    /* ================================================= */
+    /* OTTIE STEP-BY-STEP AUTOMATION PIPELINE            */
+    /* ================================================= */
+    .ottie-pipeline-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 960px) {
+      .ottie-pipeline-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .ottie-step-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-lg);
+      padding: 18px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .ottie-step-card:hover {
+      border-color: rgba(99, 102, 241, 0.35);
+      background: rgba(99, 102, 241, 0.03);
+      transform: translateY(-2px);
+    }
+
+    .ottie-step-card.active {
+      border-color: rgba(99, 102, 241, 0.8);
+      background: rgba(99, 102, 241, 0.08);
+      box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
+    }
+
+    .ottie-step-card.completed {
+      border-color: rgba(16, 185, 129, 0.6);
+      background: rgba(16, 185, 129, 0.04);
+    }
+
+    .ottie-step-mascot-img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+      transition: transform 0.2s ease;
+    }
+
+    .ottie-step-card:hover .ottie-step-mascot-img {
+      transform: scale(1.08);
+    }
+
+    .ottie-step-number-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      font-size: 10px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .ottie-step-card.completed .ottie-step-number-tag {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+    }
+
+    .ottie-step-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    .ottie-step-desc {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+
+    .ottie-step-status-pill {
+      margin-top: 10px;
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-dim);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ottie-step-card.active .ottie-step-status-pill {
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    .ottie-step-card.completed .ottie-step-status-pill {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .empty-audit-box {
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.015);
+    }
   </style>
 </head>
 
@@ -2201,20 +2632,29 @@
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
     <div>
-      <a href="#" class="brand" onclick="switchView('dashboard')">
-        <img src="/assets/logo.svg" alt="CI Log Analyzer" class="brand-logo-img">
-        <div>
-          <div class="brand-text">Yline Studio</div>
-          <div style="display:flex; align-items:center; margin-top:2px;">
-            <a href="/" target="_blank" rel="noopener noreferrer" style="font-size:10.5px; color:#a5b4fc; text-decoration:none; display:flex; align-items:center; gap:4px;" title="Open Yline Library in new tab">
-              <span>← Yline Library ↗</span>
-            </a>
+      <div class="sidebar-header-row">
+        <a href="#" class="brand" onclick="switchView('dashboard')">
+          <img src="/assets/logo.svg" alt="CI Log Analyzer" class="brand-logo-img">
+          <div class="brand-info">
+            <div class="brand-text">Yline Studio</div>
+            <div style="display:flex; align-items:center; margin-top:2px;">
+              <a href="/" target="_blank" rel="noopener noreferrer" style="font-size:10.5px; color:#a5b4fc; text-decoration:none; display:flex; align-items:center; gap:4px;" title="Open Yline Library in new tab">
+                <span>← Yline Library ↗</span>
+              </a>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
+        <button class="sidebar-toggle-btn" id="sidebarCollapseBtn" onclick="toggleSidebarCollapse()" title="Collapse sidebar">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+            <path d="M9 3v18"></path>
+            <path d="m14 9-3 3 3 3"></path>
+          </svg>
+        </button>
+      </div>
 
       <nav class="nav-menu">
-        <div class="nav-item active" id="nav-dashboard" onclick="switchView('dashboard')">
+        <div class="nav-item active" id="nav-dashboard" onclick="switchView('dashboard')" data-tooltip="Dashboard">
           <span class="nav-icon">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
@@ -2226,7 +2666,7 @@
           </span>
           <span>Dashboard</span>
         </div>
-        <div class="nav-item" id="nav-analyze" onclick="switchView('analyze')">
+        <div class="nav-item" id="nav-analyze" onclick="switchView('analyze')" data-tooltip="Analyze Logs">
           <span class="nav-icon">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
@@ -2235,7 +2675,7 @@
           </span>
           <span>Analyze Logs</span>
         </div>
-        <div class="nav-item" id="nav-history" onclick="switchView('history')">
+        <div class="nav-item" id="nav-history" onclick="switchView('history')" data-tooltip="History">
           <span class="nav-icon">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
@@ -2245,7 +2685,7 @@
           </span>
           <span>History</span>
         </div>
-        <div class="nav-item" id="nav-integrations" onclick="switchView('integrations')">
+        <div class="nav-item" id="nav-integrations" onclick="switchView('integrations')" data-tooltip="Integrations">
           <span class="nav-icon">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
               <path fill-rule="evenodd" clip-rule="evenodd"
@@ -2254,7 +2694,7 @@
           </span>
           <span>Integrations</span>
         </div>
-        <div class="nav-item" id="nav-automation" onclick="switchView('automation')">
+        <div class="nav-item" id="nav-automation" onclick="switchView('automation')" data-tooltip="Automation">
           <span class="nav-icon">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
@@ -2263,25 +2703,13 @@
           <span>Automation</span>
           <span class="pill-badge" style="background:rgba(99,102,241,0.18); color:#a5b4fc; font-size:9px; padding:1px 6px; margin-left:auto;">AUTO</span>
         </div>
-        <div class="nav-item" id="nav-settings" onclick="switchView('settings')">
-          <span class="nav-icon">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"></circle>
-              <path
-                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-              </path>
-            </svg>
-          </span>
-          <span>Settings</span>
-        </div>
       </nav>
     </div>
 
     <!-- SIDEBAR BOTTOM MASCOT CARD -->
     <div class="sidebar-card" onclick="openGitHubModal()">
       <img src="/assets/ottie/hello 1.png" alt="Ottie Mascot" class="sidebar-card-img">
-      <div>
+      <div class="sidebar-card-info">
         <div class="sidebar-card-title">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path
@@ -2299,19 +2727,44 @@
 
     <!-- TOPBAR -->
     <header class="topbar">
-      <div class="search-box">
+      <!-- Search bar only visible when on Integrations tab -->
+      <div class="search-box" id="topbarSearchContainer" style="display:none;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="globalSearch" placeholder="Search incidents, repos, or logs..."
+        <input type="text" id="globalSearch" placeholder="Filter repositories..."
           oninput="handleGlobalSearchInput(event)" onkeyup="handleGlobalSearchKey(event)">
         <button id="searchClearBtn" class="search-clear-btn" onclick="clearGlobalSearch()">✕</button>
         <span class="search-shortcut">Ctrl K</span>
       </div>
 
       <div class="topbar-right">
+        <!-- NOTIFICATION BELL WITH DROPDOWN -->
+        <div class="topbar-notif-wrapper" style="position:relative;">
+          <button type="button" class="topbar-bell-btn" id="notifBellBtn" onclick="toggleNotifDropdown(event)" title="Notifications">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notif-badge-dot" id="notifBadgeDot"></span>
+          </button>
+
+          <div class="notif-dropdown" id="notifDropdown" style="display:none;">
+            <div class="notif-header">
+              <div class="notif-title">
+                <span>Notifications</span>
+                <span class="notif-count-pill" id="notifCountPill">2</span>
+              </div>
+              <button class="notif-clear-btn" onclick="clearNotifications()">Clear All</button>
+            </div>
+            <div class="notif-list" id="notifList">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
         <!-- OTTIE INTERACTIVE TOUR BUTTON -->
         <button type="button" class="topbar-tour-btn" onclick="startOttieTour(true)" title="Take interactive Ottie guided walkthrough">
           <img src="/assets/ottie/hello 1.png" style="width:18px; height:18px; object-fit:contain;" alt="Ottie">
@@ -2482,170 +2935,172 @@
           </span>
           Analyze CI/CD Logs
         </h2>
-        <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Paste raw terminal output, upload log file,
-          or fetch directly from GitHub Actions.</p>
+        <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Paste raw terminal output, upload log file, or fetch directly from GitHub Actions.</p>
       </div>
 
-      <!-- TABS -->
-      <div class="tabs-pill-container">
-        <button class="pill-tab-btn active" id="tab-btn-paste" onclick="switchSubtab('paste')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-          </svg>
-          Paste Logs
-        </button>
-        <button class="pill-tab-btn" id="tab-btn-upload" onclick="switchSubtab('upload')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="17 8 12 3 7 8"></polyline>
-            <line x1="12" y1="3" x2="12" y2="15"></line>
-          </svg>
-          Upload File
-        </button>
-        <button class="pill-tab-btn" id="tab-btn-github" onclick="switchSubtab('github')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-          </svg>
-          GitHub Actions
-        </button>
-        <button class="pill-tab-btn" id="tab-btn-presets" onclick="switchSubtab('presets')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="4 17 10 11 4 5"></polyline>
-            <line x1="12" y1="19" x2="20" y2="19"></line>
-          </svg>
-          Quick Failure Presets
-        </button>
-      </div>
+      <!-- HIDDEN PROVIDER SELECTOR SO BACKEND LOGIC WORKS TRANSPARENTLY -->
+      <input type="hidden" id="aiProviderSelect" value="openrouter">
 
-      <!-- GITHUB ACTIONS WORKFLOW PICKER SUBTAB -->
-      <div id="subtab-github" style="display:none; margin-bottom:20px;" class="section-box">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-          <div>
-            <div style="font-weight:700; font-size:14px; color:#fff;">Select Repository &amp; Workflow Run</div>
-            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Fetch failing logs directly from
-              GitHub Actions</div>
+      <!-- STEP 1 CARD: INPUT CI/CD FAILURE LOG -->
+      <div class="analyze-step-card">
+        <div class="analyze-card-header">
+          <div class="analyze-step-tag">
+            <span class="step-num">Step 1</span>
+            <span class="step-title">Provide Failure Log Trace</span>
           </div>
-          <button class="btn-secondary" style="font-size:11px; padding:6px 12px;" onclick="openGitHubModal()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path
-                d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4">
-              </path>
-            </svg>
-            Change PAT Token
-          </button>
-        </div>
 
-        <div id="ghActionsAuthNotice" class="auth-banner-box" style="display:none; margin-bottom:14px;">
-          <div style="font-size:14px; font-weight:700; color:#fff; margin-bottom:4px;">No GitHub Account Connected</div>
-          <div style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">Enter your GitHub PAT to load your
-            repositories and workflow logs without any mock data.</div>
-          <button class="btn-primary" onclick="openGitHubModal()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-            </svg>
-            Connect GitHub Token
-          </button>
-        </div>
-
-        <div id="ghActionsSelectors" style="display:flex; gap:12px; margin-bottom:14px; flex-wrap:wrap;">
-          <select id="repoSelectDropdown" class="select-dropdown" style="min-width:240px;"
-            onchange="loadRunsForSelectedRepo()">
-            <option value="">- Choose a Repository -</option>
-          </select>
-          <select id="runSelectDropdown" class="select-dropdown" style="min-width:240px;"
-            onchange="fetchLogForSelectedRun()">
-            <option value="">Select a repository first</option>
-          </select>
-        </div>
-        <div id="ghFetchStatus" style="font-size:12px; color:var(--text-dim);"></div>
-      </div>
-
-      <!-- UPLOAD SUBTAB -->
-      <div id="subtab-upload" style="display:none; margin-bottom:20px;" class="section-box">
-        <div
-          style="border:2px dashed var(--border); border-radius:var(--radius-lg); padding:30px; text-align:center; cursor:pointer;"
-          onclick="document.getElementById('fileUploadInput').click()">
-          <input type="file" id="fileUploadInput" style="display:none;" onchange="handleFileUpload(event)">
-          <div style="font-size:32px; margin-bottom:8px; color:#818cf8;">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="17 8 12 3 7 8"></polyline>
-              <line x1="12" y1="3" x2="12" y2="15"></line>
-            </svg>
+          <!-- TABS -->
+          <div class="tabs-pill-container" style="margin-bottom:0;">
+            <button class="pill-tab-btn active" id="tab-btn-paste" onclick="switchSubtab('paste')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+              </svg>
+              Paste Logs
+            </button>
+            <button class="pill-tab-btn" id="tab-btn-upload" onclick="switchSubtab('upload')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              Upload File
+            </button>
+            <button class="pill-tab-btn" id="tab-btn-github" onclick="switchSubtab('github')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+              GitHub Actions
+            </button>
+            <button class="pill-tab-btn" id="tab-btn-presets" onclick="switchSubtab('presets')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+              Quick Failure Presets
+            </button>
           </div>
-          <div style="font-size:14px; font-weight:700; color:#fff;">Click or drag &amp; drop your CI/CD log file</div>
-          <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Supports .log, .txt, .json files up to
-            25MB</div>
+        </div>
+
+        <!-- GITHUB ACTIONS WORKFLOW PICKER SUBTAB -->
+        <div id="subtab-github" style="display:none; margin-bottom:14px;" class="section-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <div>
+              <div style="font-weight:700; font-size:13px; color:#fff;">Select Repository &amp; Workflow Run</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Fetch failing logs directly from
+                GitHub Actions</div>
+            </div>
+            <button class="btn-secondary" style="font-size:11px; padding:6px 12px;" onclick="openGitHubModal()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4">
+                </path>
+              </svg>
+              Change PAT Token
+            </button>
+          </div>
+
+          <div id="ghActionsAuthNotice" class="auth-banner-box" style="display:none; margin-bottom:14px;">
+            <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:4px;">No GitHub Account Connected</div>
+            <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:12px;">Enter your GitHub PAT to load your
+              repositories and workflow logs without any mock data.</div>
+            <button class="btn-primary" onclick="openGitHubModal()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+              Connect GitHub Token
+            </button>
+          </div>
+
+          <div id="ghActionsSelectors" style="display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
+            <select id="repoSelectDropdown" class="select-dropdown" style="min-width:240px;"
+              onchange="loadRunsForSelectedRepo()">
+              <option value="">- Choose a Repository -</option>
+            </select>
+            <select id="runSelectDropdown" class="select-dropdown" style="min-width:240px;"
+              onchange="fetchLogForSelectedRun()">
+              <option value="">Select a repository first</option>
+            </select>
+          </div>
+          <div id="ghFetchStatus" style="font-size:12px; color:var(--text-dim);"></div>
+        </div>
+
+        <!-- UPLOAD SUBTAB -->
+        <div id="subtab-upload" style="display:none; margin-bottom:14px;" class="section-box">
+          <div
+            style="border:2px dashed var(--border); border-radius:var(--radius-lg); padding:26px; text-align:center; cursor:pointer;"
+            onclick="document.getElementById('fileUploadInput').click()">
+            <input type="file" id="fileUploadInput" style="display:none;" onchange="handleFileUpload(event)">
+            <div style="font-size:30px; margin-bottom:6px; color:#818cf8;">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <div style="font-size:13.5px; font-weight:700; color:#fff;">Click or drag &amp; drop your CI/CD log file</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Supports .log, .txt, .json files up to
+              25MB</div>
+          </div>
+        </div>
+
+        <!-- PRESETS SUBTAB -->
+        <div id="subtab-presets" style="display:none; margin-bottom:14px;">
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn-secondary" style="padding:6px 12px; font-size:11.5px;" onclick="loadPreset('pytest')">Pytest
+              401 Auth Error</button>
+            <button class="btn-secondary" style="padding:6px 12px; font-size:11.5px;"
+              onclick="loadPreset('requests')">Python ModuleNotFoundError</button>
+            <button class="btn-secondary" style="padding:6px 12px; font-size:11.5px;"
+              onclick="loadPreset('flutter')">Flutter Null Safety Failure</button>
+            <button class="btn-secondary" style="padding:6px 12px; font-size:11.5px;" onclick="loadPreset('docker')">Docker
+              Psycopg2 C Header Missing</button>
+            <button class="btn-secondary" style="padding:6px 12px; font-size:11.5px;" onclick="loadPreset('webpack')">NPM
+              React 19 Peer Conflict</button>
+          </div>
+        </div>
+
+        <!-- CODE TERMINAL -->
+        <div class="code-terminal" style="margin-top:10px;">
+          <textarea id="logEditor" class="terminal-textarea"
+            placeholder="Paste your raw terminal dump, GitHub Actions job failure trace, or test error log here..."></textarea>
+          <div class="terminal-footer">
+            <span id="charCountDisplay">0 characters</span>
+            <button class="clear-action" onclick="clearEditor()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              Clear
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- PRESETS SUBTAB -->
-      <div id="subtab-presets" style="display:none; margin-bottom:20px;">
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <button class="btn-secondary" style="padding:7px 14px; font-size:12px;" onclick="loadPreset('pytest')">Pytest
-            401 Auth Error</button>
-          <button class="btn-secondary" style="padding:7px 14px; font-size:12px;"
-            onclick="loadPreset('requests')">Python ModuleNotFoundError</button>
-          <button class="btn-secondary" style="padding:7px 14px; font-size:12px;"
-            onclick="loadPreset('flutter')">Flutter Null Safety Failure</button>
-          <button class="btn-secondary" style="padding:7px 14px; font-size:12px;" onclick="loadPreset('docker')">Docker
-            Psycopg2 C Header Missing</button>
-          <button class="btn-secondary" style="padding:7px 14px; font-size:12px;" onclick="loadPreset('webpack')">NPM
-            React 19 Peer Conflict</button>
-        </div>
-      </div>
+      <!-- STEP 2 CARD: DISPATCH AI DIAGNOSIS (ZERO MODEL SELECTION SHOWN) -->
+      <div class="analyze-step-card">
+        <div class="analyze-dispatch-row">
+          <div class="analyze-dispatch-info">
+            <div class="analyze-step-tag">
+              <span class="step-num">Step 2</span>
+              <span class="step-title">Autonomous AI Diagnostic Dispatch</span>
+            </div>
+            <p style="font-size:12px; color:var(--text-muted); margin-top:4px; line-height:1.4;">
+              Engine isolates stack trace, pinpoints root failure line, generates verified code remediation, and synthesizes Cursor / Copilot fix commands.
+            </p>
+          </div>
 
-      <!-- CODE TERMINAL -->
-      <div class="code-terminal">
-        <textarea id="logEditor" class="terminal-textarea"
-          placeholder="Paste your raw terminal dump, GitHub Actions job failure trace, or test error log here..."></textarea>
-        <div class="terminal-footer">
-          <span id="charCountDisplay">0 characters</span>
-          <button class="clear-action" onclick="clearEditor()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="3 6 5 6 21 6"></polyline>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-            Clear
+          <button class="btn-primary" id="btnExecuteAnalyze" onclick="executeAnalyze()" style="padding:12px 24px; font-size:13.5px;">
+            <span id="execIcon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </span>
+            <span id="execText">Analyze Logs with AI →</span>
           </button>
         </div>
-      </div>
-
-      <!-- PROVIDER SELECTION & EXECUTE -->
-      <div class="provider-bar">
-        <div class="provider-label">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-            <rect x="9" y="9" width="6" height="6"></rect>
-            <line x1="9" y1="1" x2="9" y2="4"></line>
-            <line x1="15" y1="1" x2="15" y2="4"></line>
-            <line x1="9" y1="20" x2="9" y2="23"></line>
-            <line x1="15" y1="20" x2="15" y2="23"></line>
-            <line x1="20" y1="9" x2="23" y2="9"></line>
-            <line x1="20" y1="14" x2="23" y2="14"></line>
-            <line x1="1" y1="9" x2="4" y2="9"></line>
-            <line x1="1" y1="14" x2="4" y2="14"></line>
-          </svg>
-          <span>AI Diagnostic Engine:</span>
-          <select id="aiProviderSelect" class="select-dropdown">
-            <option value="openrouter" selected>OpenRouter (Llama 3.3 70B - Free)</option>
-            <option value="groq">Groq (Llama 3.3 70B Versatile)</option>
-            <option value="gemini">Google Gemini 2.5 Flash</option>
-            <option value="offline">Built-in Rule Heuristics Engine</option>
-          </select>
-        </div>
-
-        <button class="btn-primary" id="btnExecuteAnalyze" onclick="executeAnalyze()">
-          <span id="execIcon">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-            </svg>
-          </span>
-          <span id="execText">Analyze Logs with AI →</span>
-        </button>
       </div>
     </main>
 
@@ -2865,14 +3320,23 @@
           <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Live repositories loaded directly from
             GitHub API using your Personal Access Token.</p>
         </div>
-        <button class="btn-primary" onclick="openGitHubModal()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path
-              d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4">
-            </path>
-          </svg>
-          Manage PAT Token
-        </button>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <div class="search-box" style="margin:0; width:240px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="integrationsSearchInput" placeholder="Filter repositories..." oninput="handleIntegrationsPageSearch(event)">
+          </div>
+          <button class="btn-primary" onclick="openGitHubModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4">
+              </path>
+            </svg>
+            Manage PAT Token
+          </button>
+        </div>
       </div>
 
       <!-- REPOS GRID -->
@@ -2983,49 +3447,60 @@
         </div>
       </div>
 
-      <!-- VISUAL 5-STEP PIPELINE TRACKER -->
+      <!-- OTTIE 5-STEP VISUAL PIPELINE REPRESENTATION -->
       <div class="section-box">
         <div class="section-head">
           <div class="section-heading">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-            Closed-Loop Self-Healing Pipeline
+            Ottie Autonomous Self-Healing Pipeline
           </div>
           <div style="font-size:11px; color:var(--text-dim);" id="autoLoopCounter">Iteration: Idle</div>
         </div>
 
-        <div class="stepper-flex">
-          <div class="step-card" id="step-1">
-            <div class="step-num-badge">1</div>
-            <div class="step-label">INTERCEPT</div>
-            <div class="step-desc">Detect CI/CD Failure</div>
+        <div class="ottie-pipeline-container">
+          <!-- Step 1: Intercept -->
+          <div class="ottie-step-card idle" id="step-1">
+            <img src="/assets/ottie/analyziruet 1.png" class="ottie-step-mascot-img" alt="Intercept">
+            <div class="ottie-step-number-tag">1</div>
+            <div class="ottie-step-title">INTERCEPT</div>
+            <div class="ottie-step-desc">Detect CI/CD Failure</div>
+            <div class="ottie-step-status-pill">Standby</div>
           </div>
-          <div class="step-line" id="line-1"></div>
 
-          <div class="step-card" id="step-2">
-            <div class="step-num-badge">2</div>
-            <div class="step-label">DIAGNOSE</div>
-            <div class="step-desc">AI Root Cause Analysis</div>
+          <!-- Step 2: Diagnose -->
+          <div class="ottie-step-card idle" id="step-2">
+            <img src="/assets/ottie/idea 1.png" class="ottie-step-mascot-img" alt="Diagnose">
+            <div class="ottie-step-number-tag">2</div>
+            <div class="ottie-step-title">DIAGNOSE</div>
+            <div class="ottie-step-desc">DeepSeek Root Cause</div>
+            <div class="ottie-step-status-pill">Standby</div>
           </div>
-          <div class="step-line" id="line-2"></div>
 
-          <div class="step-card" id="step-3">
-            <div class="step-num-badge">3</div>
-            <div class="step-label">SYNTHESIZE</div>
-            <div class="step-desc">Code Patch Generation</div>
+          <!-- Step 3: Synthesize -->
+          <div class="ottie-step-card idle" id="step-3">
+            <img src="/assets/ottie/working 1.png" class="ottie-step-mascot-img" alt="Synthesize">
+            <div class="ottie-step-number-tag">3</div>
+            <div class="ottie-step-title">SYNTHESIZE</div>
+            <div class="ottie-step-desc">AST Patch Generation</div>
+            <div class="ottie-step-status-pill">Standby</div>
           </div>
-          <div class="step-line" id="line-3"></div>
 
-          <div class="step-card" id="step-4">
-            <div class="step-num-badge">4</div>
-            <div class="step-label">DISPATCH</div>
-            <div class="step-desc">Git Branch &amp; Push</div>
+          <!-- Step 4: Dispatch -->
+          <div class="ottie-step-card idle" id="step-4">
+            <img src="/assets/ottie/image 1949.png" class="ottie-step-mascot-img" alt="Dispatch">
+            <div class="ottie-step-number-tag">4</div>
+            <div class="ottie-step-title">DISPATCH</div>
+            <div class="ottie-step-desc">Git Branch &amp; PR Push</div>
+            <div class="ottie-step-status-pill">Standby</div>
           </div>
-          <div class="step-line" id="line-4"></div>
 
-          <div class="step-card" id="step-5">
-            <div class="step-num-badge">5</div>
-            <div class="step-label">VERIFY</div>
-            <div class="step-desc">Re-run &amp; Pass Loop</div>
+          <!-- Step 5: Verify -->
+          <div class="ottie-step-card idle" id="step-5">
+            <img src="/assets/ottie/delighted 1.png" class="ottie-step-mascot-img" alt="Verify">
+            <div class="ottie-step-number-tag">5</div>
+            <div class="ottie-step-title">VERIFY</div>
+            <div class="ottie-step-desc">Build Re-run Loop</div>
+            <div class="ottie-step-status-pill">Standby</div>
           </div>
         </div>
       </div>
@@ -3053,94 +3528,13 @@
           </div>
         </div>
         <div id="autoAuditTrailList" class="incidents-list">
-          <div class="incident-row">
-            <div class="incident-left">
-              <div class="status-dot success">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              </div>
-              <div>
-                <div class="inc-title">Auto-Remediated: test_auth.py (Authentication Error)</div>
-                <div class="inc-env">Dispatched commit to ai-heal/patch-101 • Passed on Attempt 1</div>
-              </div>
-            </div>
-            <div style="display:flex; align-items:center; gap:16px;">
-              <span class="pill-badge Success">HEALED</span>
-              <span style="font-size:11px; color:var(--text-dim);">10m ago</span>
+          <div class="empty-audit-box" style="text-align:center; padding:32px 20px;">
+            <img src="/assets/ottie/idea 1.png" style="width:56px; height:56px; margin-bottom:12px; object-fit:contain;" alt="Ottie">
+            <div style="font-size:14px; font-weight:700; color:#fff;">No Automations Executed Yet</div>
+            <div style="font-size:12px; color:var(--text-muted); max-width:400px; margin:4px auto 0 auto; line-height:1.4;">
+              Select your target repository above and click "Run Healing Loop Test" to trigger autonomous failure detection and AI remediation.
             </div>
           </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- 7. SETTINGS VIEW -->
-    <main id="view-settings" class="view-container">
-      <div style="margin-bottom:20px;">
-        <h2 style="font-size:22px; font-weight:800; display:flex; align-items:center; gap:10px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path
-              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-            </path>
-          </svg>
-          Platform Settings
-        </h2>
-        <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Configure your API keys, LLM endpoints, and
-          GitHub integration preferences.</p>
-      </div>
-
-      <div class="section-box" style="max-width:680px;">
-        <div class="input-group">
-          <label class="input-label">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-            </svg>
-            GitHub Personal Access Token (PAT)
-          </label>
-          <div class="input-wrapper">
-            <input type="password" id="settingsGhTokenInput" class="text-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-            <button class="pwd-toggle-btn" onclick="togglePwdVisibility('settingsGhTokenInput')">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </button>
-          </div>
-          <span style="font-size:11px; color:var(--text-dim); margin-top:4px; display:block;">Requires 'repo' and
-            'workflow' scopes to read GitHub Actions workflow failure logs.</span>
-        </div>
-
-        <div class="input-group">
-          <label class="input-label">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-              <rect x="9" y="9" width="6" height="6"></rect>
-            </svg>
-            OpenRouter API Key (Optional Override)
-          </label>
-          <div class="input-wrapper">
-            <input type="password" id="settingsOrKeyInput" class="text-input" placeholder="sk-or-v1-xxxxxxxxxxxxxxxx">
-            <button class="pwd-toggle-btn" onclick="togglePwdVisibility('settingsOrKeyInput')">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </button>
-          </div>
-          <span style="font-size:11px; color:var(--text-dim); margin-top:4px; display:block;">Leave blank to use
-            pre-configured server key with Free Llama 3.3.</span>
-        </div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px;">
-          <button class="btn-secondary" style="color:#f87171; border-color:var(--danger-border);"
-            onclick="disconnectGitHubToken()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-              <line x1="12" y1="2" x2="12" y2="12"></line>
-            </svg>
-            Disconnect GitHub
-          </button>
-          <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
         </div>
       </div>
     </main>
@@ -3312,6 +3706,27 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
     let currentIncident = null;
     let cachedRepos = [];
     let authenticatedUser = null;
+    let isReposFetching = false;
+
+    // NOTIFICATIONS STATE
+    let notifications = [
+      {
+        id: 'notif-1',
+        type: 'info',
+        title: 'CI/CD Sentinel Online',
+        desc: 'Ottie autonomous monitoring engine is running and ready for pipeline triage.',
+        time: 'Just now',
+        unread: true
+      },
+      {
+        id: 'notif-2',
+        type: 'success',
+        title: 'GitHub Integration Ready',
+        desc: 'Connect your PAT token to sync real workflow runs and trigger auto-remediation.',
+        time: '5m ago',
+        unread: true
+      }
+    ];
 
     // SAFE TITLE SANITIZER (Guarantees zero 'undefined')
     function getCleanTitle(inc) {
@@ -3346,6 +3761,8 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
 
     // VIEW SWITCHER
     function switchView(viewName) {
+      if (viewName === 'settings') viewName = 'dashboard';
+
       document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
@@ -3354,6 +3771,12 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
 
       if (targetView) targetView.classList.add('active');
       if (targetNav) targetNav.classList.add('active');
+
+      // Topbar search bar is ONLY visible on Integrations tab
+      const topbarSearch = document.getElementById('topbarSearchContainer');
+      if (topbarSearch) {
+        topbarSearch.style.display = (viewName === 'integrations') ? 'flex' : 'none';
+      }
 
       if (viewName === 'history') renderHistoryList();
       if (viewName === 'integrations') loadIntegrationsView();
@@ -3517,6 +3940,12 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
         renderResults(currentIncident);
         renderDashboardRecent();
         switchView('results');
+
+        addNotification({
+          type: (currentIncident.severity === 'Critical' || currentIncident.severity === 'High') ? 'error' : 'success',
+          title: `AI Diagnosis: ${currentIncident.title}`,
+          desc: `Identified root cause with ${Math.round(parseFloat(currentIncident.confidence || 0.94) * 100)}% confidence.`
+        });
 
       } catch (err) {
         alert('Analysis error: ' + err);
@@ -3818,6 +4247,11 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
 
         // Immediately fetch user's real repositories
         await loadRealRepositories(token);
+        addNotification({
+          type: 'success',
+          title: `GitHub Connected: @${user.login}`,
+          desc: `Loaded live repositories from GitHub with collaboration and organization access.`
+        });
         alert(`Successfully connected GitHub account: @${user.login}! Loaded your live repositories.`);
 
       } catch (err) {
@@ -3930,6 +4364,11 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
           lockInAppNavigation();
           await loadRealRepositories(token);
           renderDashboardRecent();
+          addNotification({
+            type: 'success',
+            title: `GitHub Connected: @${user.login}`,
+            desc: `Loaded live repositories from GitHub with collaboration and organization access.`
+          });
           if (localStorage.getItem('yline_tour_completed') !== 'true') {
             setTimeout(() => { startOttieTour(); }, 600);
           }
@@ -3987,15 +4426,19 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
     async function loadRealRepositories(token) {
       if (!token) {
         cachedRepos = [];
+        isReposFetching = false;
         renderIntegrationsRepos();
         return;
       }
 
+      isReposFetching = true;
+      renderIntegrationsRepos();
+
       try {
         let repos = null;
-        // Try direct GitHub API
+        // Try direct GitHub API with owner, collaborator, and organization_member affiliations
         try {
-          const ghResp = await fetch('https://api.github.com/user/repos?sort=updated&per_page=100&affiliation=owner,collaborator', {
+          const ghResp = await fetch('https://api.github.com/user/repos?sort=updated&per_page=100&affiliation=owner,collaborator,organization_member', {
             headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
           });
           if (ghResp.ok) {
@@ -4019,11 +4462,13 @@ npm error peer react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @stripe/react-stripe-j
 
         cachedRepos = repos || [];
         populateRepoSelectDropdown();
-        renderIntegrationsRepos();
         populateAutoTargetRepos();
 
       } catch (err) {
         console.warn('Repository load error:', err);
+      } finally {
+        isReposFetching = false;
+        renderIntegrationsRepos();
       }
     }
 
@@ -4161,7 +4606,7 @@ Error: Command failed with non-zero exit code during workflow execution.`;
       }
     }
 
-    function renderIntegrationsRepos() {
+    function renderIntegrationsRepos(filterQuery = '') {
       const grid = document.getElementById('integrationsReposGrid');
       if (!grid) return;
 
@@ -4183,12 +4628,52 @@ Error: Command failed with non-zero exit code during workflow execution.`;
         return;
       }
 
-      if (!cachedRepos || cachedRepos.length === 0) {
-        grid.innerHTML = '<div style="color:var(--text-dim); font-size:13px; grid-column:1/-1; text-align:center; padding:30px;">Loading your live GitHub repositories...</div>';
+      if (isReposFetching) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1; text-align:center; padding:50px 20px;">
+            <img src="/assets/ottie/working 1.png" style="width:68px; height:68px; margin-bottom:14px; object-fit:contain; animation: gentlePulse 2s infinite ease-in-out;" alt="Ottie Loading">
+            <div style="font-size:15px; font-weight:700; color:#fff; margin-bottom:6px;">Loading your live GitHub repositories...</div>
+            <div style="font-size:12px; color:var(--text-muted);">Fetching owned, collaborated, and organization repositories via GitHub REST API.</div>
+          </div>
+        `;
         return;
       }
 
-      grid.innerHTML = cachedRepos.map(r => `
+      if (!cachedRepos || cachedRepos.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align:center; padding:44px 20px; background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius-lg);">
+            <img src="/assets/ottie/what 1.png" style="width:72px; height:72px; margin-bottom:14px; object-fit:contain;" alt="Ottie No Repos">
+            <div style="font-size:16px; font-weight:800; color:#fff; margin-bottom:6px;">No Repositories Found in GitHub</div>
+            <p style="font-size:12.5px; color:var(--text-muted); max-width:440px; margin:0 auto 20px auto; line-height:1.5;">
+              No repositories were returned for this account. Create a repository on GitHub or verify that your Personal Access Token includes <code style="color:#a5b4fc;">repo</code> scope.
+            </p>
+            <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+              <button class="btn-primary" onclick="loadRealRepositories(localStorage.getItem('ls_gh_token'))">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                Refresh Repositories
+              </button>
+              <button class="btn-secondary" onclick="openGitHubModal()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                Manage Token
+              </button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      let items = cachedRepos;
+      if (filterQuery) {
+        const q = filterQuery.toLowerCase().trim();
+        items = cachedRepos.filter(r => (r.name || '').toLowerCase().includes(q) || (r.description || '').toLowerCase().includes(q) || (r.language || '').toLowerCase().includes(q));
+      }
+
+      if (items.length === 0) {
+        grid.innerHTML = `<div style="color:var(--text-dim); font-size:13px; grid-column:1/-1; text-align:center; padding:30px;">No repositories matching "${filterQuery}".</div>`;
+        return;
+      }
+
+      grid.innerHTML = items.map(r => `
         <div class="repo-card" onclick="selectRepoForAnalysis('${r.name}', '${r.owner?.login || (authenticatedUser?.login || '')}')">
           <div>
             <div class="repo-header">
@@ -4255,40 +4740,46 @@ Error: Command failed with non-zero exit code during workflow execution.`;
       alert('Settings saved successfully!');
     }
 
-    // REAL-TIME SEARCH BAR LOGIC
+    // REAL-TIME INTEGRATIONS SEARCH BAR LOGIC
     function handleGlobalSearchInput(e) {
       const q = e.target.value;
       const clearBtn = document.getElementById('searchClearBtn');
-      clearBtn.style.display = q ? 'inline-block' : 'none';
+      if (clearBtn) clearBtn.style.display = q ? 'inline-block' : 'none';
 
-      // Live filter Dashboard Recent Analyses
-      renderDashboardRecent(q);
+      // Keep in-page search input in sync
+      const inPageInput = document.getElementById('integrationsSearchInput');
+      if (inPageInput) inPageInput.value = q;
 
-      // If in History, filter history
-      const histSearch = document.getElementById('histSearch');
-      if (histSearch) {
-        histSearch.value = q;
-        renderHistoryList();
+      // Filter live repos
+      renderIntegrationsRepos(q);
+    }
+
+    function handleIntegrationsPageSearch(e) {
+      const q = e.target.value;
+      const globalInput = document.getElementById('globalSearch');
+      if (globalInput) {
+        globalInput.value = q;
+        const clearBtn = document.getElementById('searchClearBtn');
+        if (clearBtn) clearBtn.style.display = q ? 'inline-block' : 'none';
       }
+      renderIntegrationsRepos(q);
     }
 
     function handleGlobalSearchKey(e) {
       if (e.key === 'Enter') {
         const q = e.target.value;
-        switchView('history');
-        const histSearch = document.getElementById('histSearch');
-        if (histSearch) {
-          histSearch.value = q;
-          renderHistoryList();
-        }
+        renderIntegrationsRepos(q);
       }
     }
 
     function clearGlobalSearch() {
       const input = document.getElementById('globalSearch');
-      input.value = '';
-      document.getElementById('searchClearBtn').style.display = 'none';
-      renderDashboardRecent('');
+      if (input) input.value = '';
+      const inPage = document.getElementById('integrationsSearchInput');
+      if (inPage) inPage.value = '';
+      const clearBtn = document.getElementById('searchClearBtn');
+      if (clearBtn) clearBtn.style.display = 'none';
+      renderIntegrationsRepos('');
     }
 
     document.addEventListener('keydown', (e) => {
@@ -4428,23 +4919,24 @@ Error: Command failed with non-zero exit code during workflow execution.`;
 
     function setStepState(stepNum, state) {
       const card = document.getElementById('step-' + stepNum);
-      const line = document.getElementById('line-' + stepNum);
       if (!card) return;
       card.classList.remove('active', 'completed');
-      if (state === 'active') card.classList.add('active');
-      if (state === 'completed') card.classList.add('completed');
+      const pill = card.querySelector('.ottie-step-status-pill');
 
-      if (line) {
-        line.classList.remove('active');
-        if (state === 'completed' || state === 'active') line.classList.add('active');
+      if (state === 'active') {
+        card.classList.add('active');
+        if (pill) pill.textContent = 'Processing...';
+      } else if (state === 'completed') {
+        card.classList.add('completed');
+        if (pill) pill.textContent = 'Done ✓';
+      } else {
+        if (pill) pill.textContent = 'Standby';
       }
     }
 
     function resetPipelineStepper() {
       for (let i = 1; i <= 5; i = i + 1) {
         setStepState(i, 'idle');
-        const line = document.getElementById('line-' + i);
-        if (line) line.classList.remove('active');
       }
       const counter = document.getElementById('autoLoopCounter');
       if (counter) counter.textContent = 'Iteration: Idle';
@@ -4570,6 +5062,10 @@ Error: Command failed with non-zero exit code during workflow execution.`;
     function addAuditTrailEntry(item) {
       const list = document.getElementById('autoAuditTrailList');
       if (!list) return;
+
+      const emptyBox = list.querySelector('.empty-audit-box');
+      if (emptyBox) emptyBox.remove();
+
       const row = document.createElement('div');
       row.className = 'incident-row';
       row.style.animation = 'fadeIn 0.3s ease';
@@ -4589,29 +5085,150 @@ Error: Command failed with non-zero exit code during workflow execution.`;
         </div>
       `;
       list.insertBefore(row, list.firstChild);
+
+      addNotification({
+        type: 'success',
+        title: `Auto-Remediated: ${item.repo}`,
+        desc: `Autonomous fix converged and passed. Dispatched to branch '${item.branch}'.`
+      });
     }
 
-    // WINDOW INITIALIZATION
-    window.onload = async () => {
-      loadPreset('pytest');
+    // SIDEBAR COLLAPSE ENGINE (ChatGPT / Claude / Grok Style)
+    function toggleSidebarCollapse() {
+      const sidebar = document.querySelector('.sidebar');
+      if (!sidebar) return;
+      const isCollapsed = sidebar.classList.toggle('collapsed');
+      localStorage.setItem('yline_sidebar_collapsed', isCollapsed ? 'true' : 'false');
 
-      // Fetch history
-      try {
-        const resp = await fetch('/api/history');
-        if (resp.ok) {
-          const raw = await resp.json();
-          allHistory = (raw || []).map(inc => ({
-            ...inc,
-            title: getCleanTitle(inc),
-            env_info: getCleanEnv(inc),
-            severity: getCleanSeverity(inc),
-            time_ago: getCleanTime(inc)
-          }));
-        }
-      } catch (e) {
-        allHistory = [];
+      const btn = document.getElementById('sidebarCollapseBtn');
+      if (btn) {
+        btn.setAttribute('title', isCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
+        btn.innerHTML = isCollapsed ? `
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+            <path d="M9 3v18"></path>
+            <path d="m11 9 3 3-3 3"></path>
+          </svg>
+        ` : `
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+            <path d="M9 3v18"></path>
+            <path d="m14 9-3 3 3 3"></path>
+          </svg>
+        `;
       }
-      renderDashboardRecent();
+    }
+
+    function restoreSidebarState() {
+      const isCollapsed = localStorage.getItem('yline_sidebar_collapsed') === 'true';
+      const sidebar = document.querySelector('.sidebar');
+      if (sidebar && isCollapsed) {
+        sidebar.classList.add('collapsed');
+        const btn = document.getElementById('sidebarCollapseBtn');
+        if (btn) {
+          btn.setAttribute('title', 'Expand sidebar');
+          btn.innerHTML = `
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+              <path d="M9 3v18"></path>
+              <path d="m11 9 3 3-3 3"></path>
+            </svg>
+          `;
+        }
+      }
+    }
+
+    // REAL-TIME NOTIFICATIONS CENTER
+    function toggleNotifDropdown(e) {
+      if (e) e.stopPropagation();
+      const dd = document.getElementById('notifDropdown');
+      if (!dd) return;
+      const isOpen = dd.style.display === 'block';
+      dd.style.display = isOpen ? 'none' : 'block';
+      if (!isOpen) {
+        notifications.forEach(n => n.unread = false);
+        const dot = document.getElementById('notifBadgeDot');
+        if (dot) dot.style.display = 'none';
+      }
+    }
+
+    function renderNotifications() {
+      const list = document.getElementById('notifList');
+      const countPill = document.getElementById('notifCountPill');
+      const dot = document.getElementById('notifBadgeDot');
+      if (!list) return;
+
+      const unreadCount = notifications.filter(n => n.unread).length;
+      if (countPill) countPill.textContent = notifications.length;
+      if (dot) dot.style.display = unreadCount > 0 ? 'block' : 'none';
+
+      if (notifications.length === 0) {
+        list.innerHTML = `
+          <div style="text-align:center; padding:24px 10px; color:var(--text-dim); font-size:12px;">
+            <img src="/assets/ottie/idea 1.png" style="width:36px; height:36px; margin-bottom:8px; opacity:0.7; object-fit:contain;" alt="Ottie">
+            <div>No new notifications</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = notifications.map(n => {
+        let iconBg = 'rgba(99,102,241,0.15)';
+        let iconColor = '#818cf8';
+        let svgIcon = '<polyline points="20 6 9 17 4 12"></polyline>';
+        if (n.type === 'error') {
+          iconBg = 'rgba(239,68,68,0.15)';
+          iconColor = '#ef4444';
+          svgIcon = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
+        } else if (n.type === 'success') {
+          iconBg = 'rgba(16,185,129,0.15)';
+          iconColor = '#10b981';
+          svgIcon = '<polyline points="20 6 9 17 4 12"></polyline>';
+        }
+
+        return `
+          <div class="notif-item">
+            <div class="notif-item-icon" style="background:${iconBg}; color:${iconColor};">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">${svgIcon}</svg>
+            </div>
+            <div class="notif-item-content">
+              <div class="notif-item-title">${escapeHtml(n.title)}</div>
+              <div class="notif-item-desc">${escapeHtml(n.desc)}</div>
+              <div class="notif-item-time">${escapeHtml(n.time)}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function addNotification(item) {
+      notifications.unshift({
+        id: 'notif-' + Date.now(),
+        type: item.type || 'info',
+        title: item.title,
+        desc: item.desc,
+        time: 'Just now',
+        unread: true
+      });
+      renderNotifications();
+      const dot = document.getElementById('notifBadgeDot');
+      if (dot) dot.style.display = 'block';
+    }
+
+    function clearNotifications() {
+      notifications = [];
+      renderNotifications();
+      const dot = document.getElementById('notifBadgeDot');
+      if (dot) dot.style.display = 'none';
+    }
+
+    document.addEventListener('click', (e) => {
+      const dd = document.getElementById('notifDropdown');
+      const btn = document.getElementById('notifBellBtn');
+      if (dd && dd.style.display === 'block' && !dd.contains(e.target) && !btn.contains(e.target)) {
+        dd.style.display = 'none';
+      }
+    });
 
     // IN-APP NAVIGATION LOCK (PREVENTS EXITING AUTHENTICATED SESSION)
     function lockInAppNavigation() {
@@ -4777,6 +5394,8 @@ Error: Command failed with non-zero exit code during workflow execution.`;
 
     // WINDOW INITIALIZATION & PERSISTENT SESSION
     window.onload = async () => {
+      restoreSidebarState();
+      renderNotifications();
       loadPreset('pytest');
 
       // Fetch history
@@ -4802,8 +5421,8 @@ Error: Command failed with non-zero exit code during workflow execution.`;
       const cachedProfile = localStorage.getItem('yline_user_profile');
 
       if (token) {
-        const settingsInput = document.getElementById('settingsGhTokenInput');
-        if (settingsInput) settingsInput.value = token;
+        const modalInput = document.getElementById('modalGhTokenInput');
+        if (modalInput) modalInput.value = token;
 
         if (cachedProfile) {
           try {
